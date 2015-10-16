@@ -1,0 +1,858 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:ui="http://java.sun.com/jsf/facelets">     
+
+    <ui:composition template="/templateCortexMenuSuperior.xhtml">
+        <ui:define name="content">
+            <sec:isAuthenticated>
+                <sec:ifAllGranted roles="ROLE_TICKET"  >
+
+                    <h:form></h:form>            
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" onerror="statusDialog.hide();" oncomplete="statusDialog.hide();"  />
+                    <p:dialog 
+                        modal="true" position="center" widgetVar="statusDialog" header="Processando..."
+                        draggable="false" closable="false"
+                        resizable="false">
+                        <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                            <b> Por favor Aguarde</b></center>
+                    </p:dialog>
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Exibição dos Tickets Cadastrados
+                    *********************************************
+                    *********************************************
+                    --> 
+                    <h:form id="formTickets"  prependId="false" >  
+
+
+
+                        <p:menubar  autoDisplay="true"  >
+
+                            <p:menuitem value="Menu Principal" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/index.jsf"  icon="ui-icon-disk" />                         
+                            <p:submenu  label="Ticktes" icon="ui-icon-person" >                              
+                                <p:menuitem value="Cadastrar Cardápio" id="btnAdicionaTicket" actionListener="#{ticketController.prepararAdicionarTicket}" 
+                                            update=":dialogTicket, :formInserir"                                             
+                                            oncomplete="inserir.show();"
+                                            icon="ui-icon-newwin"
+                                            />     
+                                <p:separator />
+
+                            </p:submenu>
+
+                            <p:submenu  label="Relatórios" icon="ui-icon-person" >                              
+                                <p:menuitem value="Relatório de Boletos Creditados" id="btnRelatorioBoleto" actionListener="#{ticketController.prepararRelatorioBoletoCreditado}" 
+                                            update=":dialogRelatorioBoleto, :formRelatorioBoleto"                                             
+                                            oncomplete="relatorioBoleto.show();"
+                                            icon="ui-icon-newwin"
+                                            />     
+                                <p:separator />
+
+                            </p:submenu>
+
+
+                            <p:submenu label="Logout" icon="ui-icon-extlink" >                        
+                                <p:menuitem value="Sair do Sistema"   url="/j_spring_security_logout" icon="ui-icon-extlink"/>
+                            </p:submenu>
+
+
+
+                        </p:menubar>
+
+
+                        <br/>
+
+                        <p:growl id="aviso" />
+
+
+                        <center><p:dataTable  id="tabela" widgetVar="tabelaTickets" var="ticketList" value="#{ticketController.ticketDataModel}"  
+                                              paginator="true" rows="10"                               
+                                              rowsPerPageTemplate="10,20,30"
+                                              emptyMessage="Nenhum ticket encontrado!"
+                                              selection="#{ticketController.selectedTicket}" selectionMode="single"                             
+                                              first="#{ticketController.ticketDataModel.rowIndex}"                                      
+                                              filteredValue="#{ticketController.filteredTickets}"   
+                                              resizableColumns="true"
+
+                                              >  
+                                <!--filteredValue="# {usuarioController.filteredUsuarios}"-->
+
+                                <p:ajax event="rowSelect"   
+                                        update=":dialogAlteraTicket, :formAlterar" listener="#{ticketController.onRowSelect}" oncomplete="alterar.show()" />                              
+
+
+                                <f:facet name="header">
+                                    Lista de Tickets
+                                    <div style="text-align: right;width:900px">
+                                        <p:outputPanel>                                  
+                                            <h:outputText value="Procurar em todos os campos:" />
+                                            <h:inputText id="globalFilter" onkeyup="if (event.keyCode === 13)
+                                        tabelaTickets.filter();"
+                                                         onkeypress="if (event.keyCode === 13)
+                                        tabelaTickets.filter();"
+                                                         style="width:250px"
+                                                         />
+                                        </p:outputPanel>
+                                    </div>
+                                </f:facet>
+
+                                <p:column filterBy="#{ticketList.dataRefeicao}"   headerText="Data do Ticket (aaaa-mm-dd)" filterMatchMode="contains">                    
+                                    <h:outputText value="#{ticketList.dataRefeicaoToString}"   >                                   
+                                    </h:outputText>
+                                </p:column>
+                                <p:column   filterBy="#{ticketList.tipoRefeicao.nome}"  headerText="Tipo de Refeição" filterMatchMode="contains">                  
+                                    <h:outputText value="#{ticketList.tipoRefeicao.nome}" />
+                                </p:column>
+
+<!--                                <p:column   headerText="Horário de Início"  >                    
+                                    <center> <h:outputText value="# {ticketList.horaInicioRefeicao}">
+                                            <f:convertDateTime locale="pt" dateStyle="long"  pattern="HH:mm" timeZone="GMT-03:00" />
+                                        </h:outputText> </center>                                                                                                                                                                                                
+                                </p:column>
+
+                                <p:column   headerText="Horário de Encerramento"  >                    
+                                    <center>  <h:outputText  value="# {ticketList.horaFimRefeicao}" >
+                                            <f:convertDateTime locale="pt" dateStyle="long" pattern="HH:mm" timeZone="GMT-03:00" />
+                                        </h:outputText>    </center>                                                                                                
+                                </p:column>-->
+                                
+                                
+                                <p:column   headerText="Horário de Funcionamento"  >                    
+                                    <center>  <h:outputText  value="#{ticketList.horarioFuncionamento}" >
+                                           
+                                        </h:outputText>    </center>                                                                                                
+                                </p:column>
+
+
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Visualiza Compradores"/>
+                                    </f:facet>                                                                                               
+
+                                    <!-- visualizarCompradoresDeTickets -->
+                                    <p:commandLink id="ajaxComandLinkVisualizarVendaTicketComprados"  
+                                                   actionListener="#{vendaTicketController.carregarTicketsCompradosPorRefeicao(ticketList.id)}" 
+                                                   style="margin-right:20px;" 
+                                                   ajax="true"                                               
+                                                   update=":dialogVisualizaCompradoresDeTickets, :formFiltraCompradoresDeTicket, :formCompradoresDeTicket, :formCompradoresDeTicket:tabelaCompradoresTicket"                                                 
+                                                   oncomplete="visualizarCompradoresDeTickets.show()"                                               
+                                                   > 
+                                        <h:outputText value="Visualiza Compradores" />
+                                    </p:commandLink> 
+                                </p:column>
+
+
+
+                            </p:dataTable>  
+                        </center>
+
+                    </h:form> 
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Inclusão de um novo Ticket
+                    *********************************************
+                    *********************************************
+                    -->                    
+                    <p:dialog header="Cadastro do Cardápio" id="dialogTicket"  widgetVar="inserir" maximizable="true" closable="false" style="overflow: scroll;overflow-y: scroll;"  showEffect="fade" hideEffect="scale" modal="true"  width="1200" >    
+
+                        <h:form id="formInserir" style="font-size: small;" prependId="false"  >
+
+
+
+<!--                            <p:focus context="formInserir" />-->
+                            <h:panelGrid  id="pnlGrdinserirTicket" columns="2">
+
+                                
+                               
+                                
+
+                              <h3>Tipo de Refeição*</h3>
+                                <p:selectOneMenu  id="novoTipoRefeicao"  value="#{ticketController.ticketEdit.tipoRefeicao.id}" label="Tipo de Refeição" required="true" >
+                                    <f:selectItem itemLabel="Selecione o Tipo da Refeição" itemValue=""  />                                      
+                                   <f:selectItems var="item" value="#{ticketController.tipoRefeicaoList}" itemValue="#{item.id}" itemLabel="#{item.nome}"/>                                    
+                                   
+                                   <p:ajax update="novoHorarioInicio novoHorarioFim"  
+                                            listener="#{ticketController.handleTipoRefeicaoChange}" global="false"                                             
+                                   >
+                                      
+                                    </p:ajax>    
+                                </p:selectOneMenu>
+
+
+                               
+
+
+
+
+                                <script>
+                                PrimeFaces.locales['pt'] = {
+                                    closeText: 'Fechar',
+                                    prevText: 'Anterior',
+                                    nextText: 'Próximo',                                    
+                                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                                    weekHeader: 'Semana',
+                                    firstDay: 1,
+                                    isRTL: false,
+                                    showMonthAfterYear: false,
+                                    yearSuffix: '',
+                                    timeOnlyTitle: 'Escolha o Horário',
+                                    timeText: 'Tempo',
+                                    hourText: 'Hora',
+                                    minuteText: 'Minuto',
+                                    secondText: 'Segundo',
+                                    currentText: 'Hora Atual', ampm: false,
+                                    month: 'Mês',
+                                    week: 'Semana',
+                                    day: 'Dia',
+                                    allDayText: 'Todo Dia'
+                                };
+                                </script>
+
+
+                                 <h3>Data da Refeição</h3>
+                                <p:calendar value="#{ticketController.ticketEdit.dataRefeicao}"  pattern="dd/MM/yyyy" mindate="sysdate" id="ticketDataDaRefeicaoInsercao" locale="pt" /> 
+
+                                 
+
+
+                                <h3>Horário de Ínicio da Refeição</h3>
+                                <p:calendar id="novoHorarioInicio" value="#{ticketController.ticketEdit.horaInicioRefeicao}"  pattern="HH:mm" timeOnly="true" locale="pt" />  
+
+                                <h3>Horário de Encerramento da Refeição</h3>
+                                <p:calendar id="novoHorarioFim" value="#{ticketController.ticketEdit.horaFimRefeicao}" pattern="HH:mm" timeOnly="true" locale="pt" />  
+
+                                
+                                
+                                
+                                
+
+                                <h3>Descrição do Cardápio da Refeição</h3>
+                                <p:inputTextarea value="#{ticketController.ticketEdit.cardapioRefeicao}" rows="5" cols="100" /> 
+
+
+
+                            </h:panelGrid>
+
+                            <br/>                           
+                            <br/>
+                            <p:messages id="msgCadastro"  redisplay="true"   /> 
+                            <center>
+                                <h:panelGrid id="panelBotoesInserir" columns="4" >                                   
+                                    <p:commandButton  update="msgCadastro, pnlGrdinserirTicket, :formTickets:tabela, 
+                                                      :formTickets:tabela:globalFilter "   
+                                                      actionListener="#{ticketController.adicionarTicket}" 
+                                                      value="Cadastrar Ticket"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="inserir.hide();"
+                                                     update="pnlGrdinserirTicket, 
+                                                     msgCadastro" 
+                                                     widgetVar="limpaCamposInsere" process="@this"  >  
+                                        <p:resetInput target="pnlGrdinserirTicket, msgCadastro" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+
+
+                        </h:form>    
+                    </p:dialog>
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Alteração de dados do Ticket
+                    *********************************************
+                    *********************************************
+                    -->
+                    <p:dialog header="Alteração do Cardápio" id="dialogAlteraTicket"  widgetVar="alterar" closable="false" maximizable="true"  style="overflow: scroll;overflow-y: scroll;"  showEffect="fade" hideEffect="scale" modal="true"  width="1200" >    
+
+                        <h:form id="formAlterar" style="font-size: small;" prependId="false"  >
+
+                            <p:focus context="formAlterar" />
+
+
+                            <h:inputHidden value="#{ticketController.selectedTicket.id}" required="true"  
+                                           validator="#{ticketController.validarEspacoBranco}" >
+                            </h:inputHidden>
+
+
+
+
+
+                            <h:panelGrid  id="pnlGrdalterarTicket" columns="2">
+
+
+                                <h3>Tipo de Refeição*</h3>
+                                <p:selectOneMenu  value="#{ticketController.selectedTicket.tipoRefeicao.id}" label="Tipo de Refeição" required="true" >
+                                    <f:selectItems var="item" value="#{ticketController.tipoRefeicaoList}" itemValue="#{item.id}" itemLabel="#{item.nome}"/>
+                                    
+                                    
+                                </p:selectOneMenu>
+
+
+                                <h3>Data da Refeição</h3>
+                                <p:calendar value="#{ticketController.selectedTicket.dataRefeicao}" pattern="dd/MM/yyyy" mindate="sysdate" id="ticketDataDaRefeicaoEdicao" locale="pt" /> 
+
+
+                                <h3>Horário de Ínicio da Refeição</h3>
+                                <p:calendar value="#{ticketController.selectedTicket.horaInicioRefeicao}" pattern="HH:mm" timeOnly="true" locale="pt" />  
+
+                                <h3>Horário de Encerramento da Refeição</h3>
+                                <p:calendar value="#{ticketController.selectedTicket.horaFimRefeicao}" pattern="HH:mm" timeOnly="true" locale="pt" />  
+
+
+                                <h3>Descrição do Cardápio da Refeição</h3>
+                                <p:inputTextarea value="#{ticketController.selectedTicket.cardapioRefeicao}" rows="5" cols="100" /> 
+
+
+
+                            </h:panelGrid>
+
+                            <br/>
+                            <br/>
+                            <p:messages id="msgAltera"  redisplay="true"   /> 
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesAlterar" columns="4" >
+                                    <p:commandButton  update="msgAltera, pnlGrdalterarTicket, :formTickets:tabela, :formTickets:tabela:globalFilter "    actionListener="#{ticketController.alterarTicket}" value="Atualizar Dados do Ticket"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="alterar.hide();" update="pnlGrdalterarTicket, msgAltera" widgetVar="limpaCamposAltera" process="@this"  >  
+                                        <p:resetInput target="pnlGrdalterarTicket, msgAltera" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+
+
+                        </h:form>    
+                    </p:dialog>
+
+
+
+                    <!--                    
+              *********************************************
+              *********************************************
+              Formulário de Visualização de Compradores de Tickets
+              *********************************************
+              *********************************************
+                    -->
+                    <p:dialog header="Compradores do Ticket da Refeição: #{vendaTicketController.selectedTicket}"
+                              id="dialogVisualizaCompradoresDeTickets" 
+                              widgetVar="visualizarCompradoresDeTickets" closable="true" maximizable="true"  
+                              showEffect="fade" hideEffect="scale" width="1200" height="550"                                                                                                                                                       
+                              style="overflow: scroll;overflow-y: scroll;"
+                              modal="true" 
+                              appendToBody="true"
+                              onShow="document.formFiltraCompradoresDeTicket.inputFilterExpression.value='';"
+                              >    
+
+                        <h:form id="formFiltraCompradoresDeTicket" prependId="false"    >
+                            <div style="text-align: left;width:900px">
+                                <p:focus context="formFiltraCompradoresDeTicket" />
+                                <p:outputPanel>                                  
+                                    <h:outputText style="font-weight: bold" value="Procurar nos campos matrícula, nome, CPF:" />&nbsp;
+                                    
+                                    
+                                    <h:inputText id="inputFilterExpression"  value="#{vendaTicketController.expressaoBusca}"                                                                                                                                                                                                                                                      
+                                                 onkeyup="if (event.keyCode===173 || event.keyCode === 45 || event.keyCode === 13) {
+                                        PrimeFaces.ab({source: 'inputFilterButao', update: 'formFiltraCompradoresDeTicket formCompradoresDeTicket tabelaCompradoresTicket'});
+                                        return false;
+                                    }"                                                 
+                                                 onkeypress="if (event.keyCode===173 || event.keyCode === 45 || event.keyCode === 13) {
+                                        PrimeFaces.ab({source: 'inputFilterButao', update: 'formFiltraCompradoresDeTicket formCompradoresDeTicket tabelaCompradoresTicket'});
+                                        return false;
+                                    }"
+                                                 onclick="inputFilterExpression.value = '';"
+                                                 
+                                                 style="width:250px;"
+                                                 />                                                                      
+
+                                    &nbsp;<p:commandButton id="inputFilterButao"  widgetVar="filtragem" update=":formFiltraCompradoresDeTicket, :formCompradoresDeTicket, :formCompradoresDeTicket:tabelaCompradoresTicket"  
+                                                           actionListener="#{vendaTicketController.filtraVendasTicketByExpression(vendaTicketController.selectedTicket.id)}" 
+                                                           value="Carregar"                                                             
+                                                           />                                                            
+
+
+
+                                </p:outputPanel>
+                            </div>
+
+
+                        </h:form>   
+                        
+
+                       
+
+
+
+
+                        <h:form id="formCompradoresDeTicket" prependId="false"    >                            
+
+                            <br/>                             
+
+                                                                                                             
+
+                            <p:dataTable id="tabelaCompradoresTicket" widgetVar="compradoresTabelaTickets" var="venda" value="#{vendaTicketController.vendaTicketDataModel}" 
+                                         emptyMessage="Nenhum ticket foi comprado para a refeição selecionada!"                                        
+                                         selection="#{vendaTicketController.selectedVendaTicket}" selectionMode="single"                             
+                                         first="#{vendaTicketController.vendaTicketDataModel.rowIndex}"                                      
+                                         filteredValue="#{vendaTicketController.filteredVendaTickets}"
+                                         paginator="true"
+                                         rows="10"
+                                         
+                                         >                                
+
+
+
+
+
+
+                                <f:facet name="header">
+                                    Lista de Compradores do #{vendaTicketController.selectedTicket}<br/>
+                                    Horário da Refeição: #{vendaTicketController.selectedTicket.horarioFuncionamento}<br/>
+                                    <b style="color: red;">(Obs:Só poderá atualizar o status dos tickets apartir de 10 minutos antes do início da refeição e até o final do horário da refeição.)</b>
+                                </f:facet>
+
+
+
+                                <p:column  headerText="Matrícula" >  
+                                    #{venda.contaComprador.usuario.matricula}  
+                                </p:column>  
+
+                                <p:column   headerText="Nome" >  
+                                    #{venda.contaComprador.usuario.nome}  
+                                </p:column>  
+                               
+                                <p:column   headerText="CPF" >  
+                                    #{venda.contaComprador.usuario.cpf}  
+                                </p:column>  
+
+                                <p:column   headerText="Ticket" >  
+                                    #{venda.ticketComprado.dataRefeicaoSemana}
+                                    #{venda.ticketComprado.tipoRefeicao.nome}    
+                                </p:column>  
+
+                                <p:column  style="text-align: center;"  headerText="Quantidade" >   
+                                    #{venda.quantidade}  
+                                </p:column>                                 
+
+
+
+                                <p:column   style="text-align: center;"  headerText="Status" >  
+
+                                    <h:outputText value="Não Usado"  rendered="#{(venda.statusTicket=='N'||venda.statusTicket=='NF')}"
+                                                  style="color: red;font-weight: bold;width:100%" >
+
+                                    </h:outputText>
+                                    
+                                    <h:outputText value="Usado"  rendered="#{(venda.statusTicket=='U'||venda.statusTicket=='UF')}"
+                                                  style="color: green;font-weight: bold;width:100%" >
+
+                                    </h:outputText>
+                                    
+                                    <h:outputText value="Expirado"  rendered="#{venda.statusTicket=='E'}"
+                                                  style="color: red;font-weight: bold;width:100%" >
+                                    </h:outputText>
+
+                                </p:column>
+
+                               
+
+                               
+                                
+                                <p:column   headerText="Alterar"  >  
+
+                                    
+                                     <center><p:commandButton    rendered="#{(venda.statusTicket=='U'||venda.statusTicket=='N')}"                                      
+                                        update=":dialogVisualizaCompradoresDeTickets, :formFiltraCompradoresDeTicket, :formCompradoresDeTicket:tabelaCompradoresTicket"  
+                                        actionListener="#{vendaTicketController.alterarStatusVendaTicket(venda.id)}"
+                                        ajax="true"                                                                   
+                                        value="Status"                  
+                                        immediate="true"                                        
+                                        process=":formCompradoresDeTicket:tabelaCompradoresTicket"
+                                        oncomplete="visualizarCompradoresDeTickets.show();PrimeFaces.ab({source: 'inputFilterButao', update: 'formFiltraCompradoresDeTicket formCompradoresDeTicket tabelaCompradoresTicket'});
+                                        return false;"
+                                        /></center> 
+
+                                </p:column>
+
+
+
+
+
+                                <p:columnGroup type="footer">  
+                                    <p:row>  
+                                        <p:column colspan="4" footerText="Total Geral de Tickets Comprados para a refeição selecionada:"  
+                                                  style="text-align:right"  />  
+
+                                        <p:column footerText="#{vendaTicketController.qtdTotalTicketsVendidos}" />  
+                                    </p:row>  
+                                </p:columnGroup>  
+
+
+                            </p:dataTable>  
+
+                            <br/> 
+                            <br/> 
+
+
+                        </h:form>
+                                                                        
+
+                        
+                         
+                    </p:dialog>
+                    
+                    
+                    
+                    
+                       <!--                    
+ *********************************************
+ *********************************************
+ Formulário de Alterar Status da Venda do Ticket comprado pelo Uusário
+ *********************************************
+ *********************************************
+                    -->
+                    <p:dialog header="Alterar o Status do Ticket Comprado para o: #{vendaTicketController.vendaTicket.ticketComprado}"
+                              id="dialogAlteraStatusVendaTicket" 
+                              widgetVar="alterarStatusVendaTicket" closable="true" maximizable="true"  
+                              showEffect="fade" hideEffect="scale" modal="true"  width="1200"                                                                                                                       
+                              >                       
+
+                        <h:form id="formAlterarStatusVendaTicket" prependId="false"    >
+                            <p:focus context="formAlterarStatusVendaTicket" />
+
+
+                            <h:inputHidden value="#{vendaTicketController.vendaTicket.id}" required="true"  >
+                            </h:inputHidden>
+
+
+
+                            Matrícula:#{vendaTicketController.vendaTicket.contaComprador.usuario.matricula}<br/>
+                            Nome do Usuário:#{vendaTicketController.vendaTicket.contaComprador.usuario.nome}<br/>
+                            CPF:#{vendaTicketController.vendaTicket.contaComprador.usuario.cpf}<br/>
+                            Ticket Comprado:#{vendaTicketController.vendaTicket.ticketComprado} <br/>
+                            Quantidade:#{vendaTicketController.vendaTicket.quantidade} <br/>
+
+                            <h:panelGrid  id="pnlGrdalterarStatusVendaTicket" columns="2">
+
+
+                                <h3>Status*</h3>
+                                <p:selectOneMenu  value="#{vendaTicketController.vendaTicket.status}" label="Tipo de Refeição" required="true" >
+                                    <f:selectItems var="item" value="#{vendaTicketController.listStatus}" itemValue="#{item}" itemLabel="#{item==false?'Não Usado':'Usado'}"/>
+                                </p:selectOneMenu>
+
+
+
+
+
+
+                            </h:panelGrid>
+
+                            <br/>
+                            <br/>
+                            <p:messages id="msgAlteraStatusVendaTicket"  redisplay="true"   /> 
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesAlterarStatusVendaTicket" columns="4" >
+                                    <p:commandButton  update="msgAlteraStatusVendaTicket, pnlGrdalterarStatusVendaTicket, :formCompradoresDeTicket:tabelaCompradoresTicket "    actionListener="#{vendaTicketController.alterarStatusVendaTicket}" value="Atualizar Status da Venda do Ticket"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="alterarStatusVendaTicket.hide();" update="pnlGrdalterarStatusVendaTicket, msgAlteraStatusVendaTicket" widgetVar="limpaCamposAlteraStatusVendaTicket" process="@this"  >  
+                                        <p:resetInput target="pnlGrdalterarStatusVendaTicket, msgAlteraStatusVendaTicket" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+
+
+
+
+                        </h:form>      
+
+                    </p:dialog>  
+                    
+                    
+                    
+
+
+
+                    <!--                    
+ *********************************************
+ *********************************************
+ Formulário de Relatorio de Boletos Creditados nas contas dos usuários
+ *********************************************
+ *********************************************
+                    -->
+                    <p:dialog header="Relatório de Boletos Creditados nas Contas dos Usuários"
+                              id="dialogRelatorioBoleto" 
+                              widgetVar="relatorioBoleto" closable="true" maximizable="true"  
+                              showEffect="fade" hideEffect="scale" modal="true"  width="1200" height="550"                                                                                                                      
+                              >                       
+
+                        <h:form id="formRelatorioBoleto" prependId="false"    >
+                            <p:focus context="formRelatorioBoleto" />
+
+
+                            <center>
+                                <b>Informe o período para geração do relatório de boletos creditados nas contas dos usuários</b>
+                                <br/><br/>
+
+
+
+                                <table>
+                                    <tr>
+                                        <td align="left"><b>Data Início</b></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right"><b>Data Fim</b></td>
+                                    </tr>
+
+                                </table>
+
+
+
+
+                                <h:panelGrid  id="pnlGrdExtratoUsuario" columns="4">
+
+                                    <script>
+                                PrimeFaces.locales['pt'] = {
+                                    closeText: 'Fechar',
+                                    prevText: 'Anterior',
+                                    nextText: 'Próximo',
+                                    currentText: 'Começo',
+                                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                                    weekHeader: 'Semana',
+                                    firstDay: 1,
+                                    isRTL: false,
+                                    showMonthAfterYear: false,
+                                    yearSuffix: '',
+                                    timeOnlyTitle: 'Só Horas',
+                                    timeText: 'Tempo',
+                                    hourText: 'Hora',
+                                    minuteText: 'Minuto',
+                                    secondText: 'Segundo',
+                                    currentText: 'Data Atual',
+                                            ampm: false,
+                                    month: 'Mês',
+                                    week: 'Semana',
+                                    day: 'Dia',
+                                    allDayText: 'Todo Dia'
+                                };
+                                    </script>
+                                    <br/>
+                                    <p:calendar label="Data Início" value="#{ticketController.dataFormIni}" required="true" requiredMessage="Informe a data inicial do extrato" mindate="#{contaController.dataFormIniMin}"  maxdate="#{contaController.dataFormFimMax}" locale="pt"  mode="inline"/>
+
+                                    <br/>
+
+                                    <br/>
+                                    <p:calendar label="Data Fim" value="#{ticketController.dataFormFim}"  required="true" requiredMessage="Informe a data final do extrato"  mindate="#{contaController.dataFormIniMin}" maxdate="#{contaController.dataFormFimMax}" locale="pt" mode="inline"/>
+
+                                    <br/> 
+                                </h:panelGrid>
+
+
+                                <p:messages id="msgExtrato"  redisplay="true"   /> 
+                                <center>
+                                    <h:panelGrid id="panelBotoesExtrato" columns="4" >                                   
+
+
+                                        <p:commandButton  update="msgExtrato, 
+                                                          pnlGrdExtratoUsuario, :formExtrato:tabelaRelatorioBoleto" 
+                                                          oncomplete="visualizaTabelaExtratoUsuarioLogado.show()"
+                                                          actionListener="#{ticketController.exibirRelatorioBoletoCreditado}" 
+                                                          value="Gerar Relatório"  />                                   
+
+
+                                        <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="relatorioBoleto.hide();" update="pnlGrdExtratoUsuario, msgExtrato" widgetVar="limpaCamposRelatorioBoletoCreditado" process="@this"  >  
+                                            <p:resetInput target="pnlGrdExtratoUsuario, msgExtrato" />  
+                                        </p:commandButton>
+                                    </h:panelGrid>
+                                </center>
+
+                            </center>  
+
+
+
+
+
+
+
+                        </h:form>      
+
+                    </p:dialog>  
+
+
+
+
+                    <!--                    
+                            *********************************************
+                            *********************************************
+                           Dialog de Detalhes do Extrato da Conta do Usuário
+                            Formulário de Detalhes do Extrato de Créditos da Conta do Cliente
+                            *********************************************
+                            *********************************************
+                    -->    
+
+                    <p:dialog header="Visualização do Relatório de Boletos Creditados nas Contas dos Usuários" id="dialogTabelaExtratoUsuario"  widgetVar="visualizaTabelaExtratoUsuarioLogado" 
+                              maximizable="true" closable="true"   position="center" resizable="false"
+                              appendToBody="true"
+                              style="overflow: scroll;overflow-y: scroll;"
+                              showEffect="fade" hideEffect="scale" modal="true"  width="1200" height="550" >                               
+
+
+
+                        <h:form id="formExtrato"  prependId="false" >
+
+
+                            <br/>
+
+                            <center>
+                                <p:commandButton value="Imprimir" type="button"  icon="ui-icon-print" >  
+                                    <p:printer target="conteudo"     />  
+                                </p:commandButton> 
+                            </center>
+
+                            <br/>
+
+                            <p:outputPanel id="conteudo"  >
+                                <p:dataTable   widgetVar="tabelaExtrato" 
+                                               style="font-size: smaller;"
+                                               emptyMessage="Relatório de boletos creditados vazio para o período informado!"
+                                               var="registro" value="#{ticketController.listRegistroOperacao}" id="tabelaRelatorioBoleto" >  
+
+                                    <f:facet name="header">  
+                                        Relatório de Boletos Creditados nas Contas dos Usuários  para o período de
+                                        <h:outputText value="#{ticketController.dataFormIni}">
+                                                <f:convertDateTime locale="pt" dateStyle="long"  pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+                                            </h:outputText> 
+                                        a
+                                        <h:outputText value="#{ticketController.dataFormFim}">
+                                                <f:convertDateTime locale="pt" dateStyle="long"  pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+                                            </h:outputText> 
+                                         
+                                    </f:facet>  
+
+
+
+                                    <p:column>  
+                                        <f:facet name="header">  
+                                            Data  
+                                        </f:facet>  
+                                         <b>
+
+                                        <h:outputText value="#{registro.dataRegistroToString}" />  
+ </b>
+                                    </p:column>  
+
+                                    <p:column   headerText="Horário"  >                    
+                                         <b>
+                                        <center> 
+                                            <h:outputText value="#{registro.dataRegistroDate}">
+                                                <f:convertDateTime locale="pt" dateStyle="long"  pattern="HH:mm" timeZone="GMT-03:00" />
+                                            </h:outputText> 
+                                        </center>                                                                                                                                                                                                
+                                              </b>
+                                    </p:column>
+                                    
+                                    
+                                      <p:column>  
+                                        <f:facet name="header">  
+                                           Operador do Sistema  
+                                        </f:facet>  
+                                           <b>
+                                          <h:outputText value="#{registro.usuarioOperador.nome}(#{registro.usuarioOperador.cpf})" />  
+                                           </b>
+                                    </p:column>  
+
+
+
+                                    <p:column headerText="Usuário" >  
+                                      
+                                            <b>
+                                                <h:outputText value="#{registro.conta.usuario.nome}"  />                                                
+                                                (<h:outputText value="#{registro.conta.usuario.cpf}"  />)
+                                            </b>    
+                                       
+                                    </p:column>
+
+
+
+                                     
+
+
+                                    <p:column headerText="Boleto" >  
+                                      
+                                            <b>
+                                                <h:outputText value="#{registro.boleto}"  />                                                
+                                            </b>    
+                                     
+                                    </p:column>  
+
+                                    <p:column headerText="Valor" rendered="#{registro.tipoOperacao.abreviacao=='C'}">  
+                                        
+                                            <b>
+                                                <h:outputText value="#{registro.valor}"  >
+                                                    <f:converter converterId="converter.ValorMonetario"/>
+                                                </h:outputText> 
+                                            </b>    
+                                        
+                                    </p:column>  
+
+
+
+
+
+                                </p:dataTable>
+                            </p:outputPanel>
+                            <br/>
+                            <br/>
+
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesVisualizaExtratoUsuario" columns="4" >                            
+                                    <p:commandButton value="Fechar Janela" ajax="false" type="button"   onclick="visualizaTabelaExtratoUsuarioLogado.hide();"  widgetVar="limpaCamposVisualizaTabelaRelatorioBoletoCreditado"   />                                                  
+                                </h:panelGrid>
+                            </center>
+
+
+
+                        </h:form>  
+
+
+
+
+                    </p:dialog>
+
+                    <!--                    
+                   *********************************************
+                   *********************************************
+                   Fim do Dialog de Detalhes do Extrato da Conta do Usuário
+                   Fim do Formulário de Detalhes do Extrato de Créditos da Conta do Cliente
+                   *********************************************
+                   *********************************************
+                    -->    
+
+
+
+
+
+                </sec:ifAllGranted>
+            </sec:isAuthenticated>
+        </ui:define>
+    </ui:composition>   
+
+</html>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:ui="http://java.sun.com/jsf/facelets">      
+
+    <ui:composition template="/templateCortexMenuLateralEsquerdo.xhtml">
+        <ui:define name="content">
+            <div class="hero-unit">
+               
+                <h1>Bem vindo!</h1>
+                
+
+                <div   class="span4 well">
+                    <div class="row">
+                        <div class="span1"><a href="http://critterapp.pagodabox.com/others/admin" class="thumbnail"><img src="./resources/imgs/iconlogin.png" alt=""/></a></div>
+                        <div class="span3">
+
+                            <p><strong> <h:outputText value="#{loginController.usuario.nome}"></h:outputText></strong></p>
+                        </div>
+                    </div>
+
+                </div>
+                <h5><p><i>Sistema desenvolvido pelo setor de Tecnologia da Informação do IFPI - Campus Floriano destinado ao controle e registro de compra, venda e utilização 
+                            dos tickets de alimentação para acesso ao refeitório da Instituição.</i></p></h5>
+
+
+
+
+            </div>
+
+
+        </ui:define>
+    </ui:composition>    
+</html>

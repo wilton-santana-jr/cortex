@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <title>PrimeFaces - ShowCase</title><link type="text/css" rel="stylesheet" href="/showcase/javax.faces.resource/theme.css.jsf?ln=primefaces-aristo" /><link type="text/css" rel="stylesheet" href="/showcase/javax.faces.resource/primefaces.css.jsf?ln=primefaces" /><script type="text/javascript" src="/showcase/javax.faces.resource/jquery/jquery.js.jsf?ln=primefaces"></script><script type="text/javascript" src="/showcase/javax.faces.resource/jquery/jquery-plugins.js.jsf?ln=primefaces"></script><script type="text/javascript" src="/showcase/javax.faces.resource/primefaces.js.jsf?ln=primefaces"></script>
+        
+        <link type="text/css" rel="stylesheet" href="/showcase/css/default.css" />
+        <link type="text/css" rel="stylesheet" href="/showcase/css/syntaxhighlighter/syntaxhighlighter.css" />
+        <style type="text/css">
+        </style>
+        
+        <script type="text/javascript">
+            //<![CDATA[
+function start() {
+    statusDialog.show();
+}
+
+function stop() {
+    statusDialog.hide();
+}
+            //]]>
+        </script>
+        
+        <script type="text/javascript">
+            $(function() {$('.sidebar a').hover(function() {$(this).toggleClass('ui-state-hover');})});
+        </script>
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12200033-3']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+          </script></head><body>
+
+		<div id="header" class="ui-widget ui-widget-header">
+			<div id="logo">
+				<img src="/showcase/images/logo.png" alt="Logo" />
+			</div>
+            
+            <div id="menu" class="ui-widget">
+                <ul id="main">
+                    <li class="current_page_item"><a href="/showcase/ui/home.jsf" style="background:url('../design/ui.png') no-repeat center left;">Components</a></li>
+                    <li><a href="/showcase/mobile/index.jsf" style="background:url('../design/iphone.png') no-repeat center left;">Mobile</a></li>
+                    <li><a href="/showcase/push/index.jsf" style="background:url('../design/push.png') no-repeat center left">Push</a></li>
+                    <li class="current_page_item"><a href="/showcase/ui/macosx.jsf" style="background:url('../design/mac.png') no-repeat center left;">Mock OS X</a></li>
+                </ul>
+            </div>
+            
+            <div id="globalthemeswitcher">
+<form id="j_idt9" name="j_idt9" method="post" action="/showcase/ui/fileDownload.jsf" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt9" value="j_idt9" />
+<div id="j_idt9:j_idt10" class="ui-selectonemenu ui-widget ui-state-default ui-corner-all ui-helper-clearfix" style="width:175px;"><div class="ui-helper-hidden-accessible"><select id="j_idt9:j_idt10_input" name="j_idt9:j_idt10_input"><option value="">Choose Theme</option><option value="afterdark">afterdark</option><option value="afternoon">afternoon</option><option value="afterwork">afterwork</option><option value="aristo" selected="selected">aristo</option><option value="black-tie">black-tie</option><option value="blitzer">blitzer</option><option value="bluesky">bluesky</option><option value="bootstrap">bootstrap</option><option value="casablanca">casablanca</option><option value="cruze">cruze</option><option value="cupertino">cupertino</option><option value="dark-hive">dark-hive</option><option value="dot-luv">dot-luv</option><option value="eggplant">eggplant</option><option value="excite-bike">excite-bike</option><option value="flick">flick</option><option value="glass-x">glass-x</option><option value="home">home</option><option value="hot-sneaks">hot-sneaks</option><option value="humanity">humanity</option><option value="le-frog">le-frog</option><option value="midnight">midnight</option><option value="mint-choc">mint-choc</option><option value="overcast">overcast</option><option value="pepper-grinder">pepper-grinder</option><option value="redmond">redmond</option><option value="rocket">rocket</option><option value="sam">sam</option><option value="smoothness">smoothness</option><option value="south-street">south-street</option><option value="start">start</option><option value="sunny">sunny</option><option value="swanky-purse">swanky-purse</option><option value="trontastic">trontastic</option><option value="ui-darkness">ui-darkness</option><option value="ui-lightness">ui-lightness</option><option value="vader">vader</option></select></div><div class="ui-helper-hidden-accessible"><input id="j_idt9:j_idt10_focus" name="j_idt9:j_idt10_focus" type="text" /></div><label id="j_idt9:j_idt10_label" class="ui-selectonemenu-label ui-inputfield ui-corner-all">&nbsp;</label><div class="ui-selectonemenu-trigger ui-state-default ui-corner-right"><span class="ui-icon ui-icon-triangle-1-s"></span></div><div id="j_idt9:j_idt10_panel" class="ui-selectonemenu-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow"><div class="ui-selectonemenu-items-wrapper" style="height:200px"><table class="ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset"><tbody><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="Choose Theme"><td colspan="2">Choose Theme</td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afterdark"><td><img src="/showcase/javax.faces.resource/images/themes/afterdark.png.jsf" /></td><td>
+                            afterdark
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afternoon"><td><img src="/showcase/javax.faces.resource/images/themes/afternoon.png.jsf" /></td><td>
+                            afternoon
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afterwork"><td><img src="/showcase/javax.faces.resource/images/themes/afterwork.png.jsf" /></td><td>
+                            afterwork
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="aristo"><td><img src="/showcase/javax.faces.resource/images/themes/aristo.png.jsf" /></td><td>
+                            aristo
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="black-tie"><td><img src="/showcase/javax.faces.resource/images/themes/black-tie.png.jsf" /></td><td>
+                            black-tie
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="blitzer"><td><img src="/showcase/javax.faces.resource/images/themes/blitzer.png.jsf" /></td><td>
+                            blitzer
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="bluesky"><td><img src="/showcase/javax.faces.resource/images/themes/bluesky.png.jsf" /></td><td>
+                            bluesky
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="bootstrap"><td><img src="/showcase/javax.faces.resource/images/themes/bootstrap.png.jsf" /></td><td>
+                            bootstrap
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="casablanca"><td><img src="/showcase/javax.faces.resource/images/themes/casablanca.png.jsf" /></td><td>
+                            casablanca
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="cruze"><td><img src="/showcase/javax.faces.resource/images/themes/cruze.png.jsf" /></td><td>
+                            cruze
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="cupertino"><td><img src="/showcase/javax.faces.resource/images/themes/cupertino.png.jsf" /></td><td>
+                            cupertino
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="dark-hive"><td><img src="/showcase/javax.faces.resource/images/themes/dark-hive.png.jsf" /></td><td>
+                            dark-hive
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="dot-luv"><td><img src="/showcase/javax.faces.resource/images/themes/dot-luv.png.jsf" /></td><td>
+                            dot-luv
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="eggplant"><td><img src="/showcase/javax.faces.resource/images/themes/eggplant.png.jsf" /></td><td>
+                            eggplant
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="excite-bike"><td><img src="/showcase/javax.faces.resource/images/themes/excite-bike.png.jsf" /></td><td>
+                            excite-bike
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="flick"><td><img src="/showcase/javax.faces.resource/images/themes/flick.png.jsf" /></td><td>
+                            flick
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="glass-x"><td><img src="/showcase/javax.faces.resource/images/themes/glass-x.png.jsf" /></td><td>
+                            glass-x
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="home"><td><img src="/showcase/javax.faces.resource/images/themes/home.png.jsf" /></td><td>
+                            home
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="hot-sneaks"><td><img src="/showcase/javax.faces.resource/images/themes/hot-sneaks.png.jsf" /></td><td>
+                            hot-sneaks
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="humanity"><td><img src="/showcase/javax.faces.resource/images/themes/humanity.png.jsf" /></td><td>
+                            humanity
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="le-frog"><td><img src="/showcase/javax.faces.resource/images/themes/le-frog.png.jsf" /></td><td>
+                            le-frog
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="midnight"><td><img src="/showcase/javax.faces.resource/images/themes/midnight.png.jsf" /></td><td>
+                            midnight
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="mint-choc"><td><img src="/showcase/javax.faces.resource/images/themes/mint-choc.png.jsf" /></td><td>
+                            mint-choc
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="overcast"><td><img src="/showcase/javax.faces.resource/images/themes/overcast.png.jsf" /></td><td>
+                            overcast
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="pepper-grinder"><td><img src="/showcase/javax.faces.resource/images/themes/pepper-grinder.png.jsf" /></td><td>
+                            pepper-grinder
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="redmond"><td><img src="/showcase/javax.faces.resource/images/themes/redmond.png.jsf" /></td><td>
+                            redmond
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="rocket"><td><img src="/showcase/javax.faces.resource/images/themes/rocket.png.jsf" /></td><td>
+                            rocket
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="sam"><td><img src="/showcase/javax.faces.resource/images/themes/sam.png.jsf" /></td><td>
+                            sam
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="smoothness"><td><img src="/showcase/javax.faces.resource/images/themes/smoothness.png.jsf" /></td><td>
+                            smoothness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="south-street"><td><img src="/showcase/javax.faces.resource/images/themes/south-street.png.jsf" /></td><td>
+                            south-street
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="start"><td><img src="/showcase/javax.faces.resource/images/themes/start.png.jsf" /></td><td>
+                            start
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="sunny"><td><img src="/showcase/javax.faces.resource/images/themes/sunny.png.jsf" /></td><td>
+                            sunny
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="swanky-purse"><td><img src="/showcase/javax.faces.resource/images/themes/swanky-purse.png.jsf" /></td><td>
+                            swanky-purse
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="trontastic"><td><img src="/showcase/javax.faces.resource/images/themes/trontastic.png.jsf" /></td><td>
+                            trontastic
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="ui-darkness"><td><img src="/showcase/javax.faces.resource/images/themes/ui-darkness.png.jsf" /></td><td>
+                            ui-darkness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="ui-lightness"><td><img src="/showcase/javax.faces.resource/images/themes/ui-lightness.png.jsf" /></td><td>
+                            ui-lightness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="vader"><td><img src="/showcase/javax.faces.resource/images/themes/vader.png.jsf" /></td><td>
+                            vader
+                        </td></tr></tbody></table></div></div></div><script id="j_idt9:j_idt10_s" type="text/javascript">$(function(){PrimeFaces.cw('ThemeSwitcher','widget_j_idt9_j_idt10',{id:'j_idt9:j_idt10',effect:'fade',behaviors:{change:function(event) {PrimeFaces.ab({source:'j_idt9:j_idt10',event:'valueChange',process:'j_idt9:j_idt10'}, arguments[1]);}}});});</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="3388778655361746797:1598017011329533475" autocomplete="off" />
+</form>
+            </div>
+		</div>
+
+        <div id="page" class="ui-widget">
+            <div id="sidebar" class="ui-widget-content ui-corner-bottom ui-helper-clearfix ui-shadow">
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title" style="margin-top:2px">Ajax Core</h3>
+                <div class="ui-widget submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/pprUpdate.jsf">Basics</a></li>
+                                    <li><a href="/showcase/ui/pprPartialTree.jsf">Partial Processing</a></li>
+                                    <li><a href="/showcase/ui/partialSubmit.jsf">Partial Submit</a></li>
+                                    <li><a href="/showcase/ui/pprAjaxValidations.jsf">Validations</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/selectors.jsf">Selectors</a></li>
+                                    <li><a href="/showcase/ui/poll.jsf">Polling</a></li>
+                                    <li><a href="/showcase/ui/remoteCommand.jsf">RemoteCommand</a></li>
+                                    <li><a href="/showcase/ui/ajaxStatusHome.jsf">AjaxStatus</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/ajaxifyKeyEvents.jsf">Events</a></li>
+                                    <li><a href="/showcase/ui/pprSelect.jsf">Selects</a></li>                                    
+                                    <li><a href="/showcase/ui/ajaxifyAction.jsf">Listeners</a></li>
+                                    <li><a href="/showcase/ui/pprCounter.jsf">Counter</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Input</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/autocompleteHome.jsf">AutoComplete</a></li>
+                                    <li><a href="/showcase/ui/selectBooleanButton.jsf">BooleanButton</a></li>
+                                    <li><a href="/showcase/ui/selectBooleanCheckbox.jsf">BoolCheckbox</a></li>
+                                    <li><a href="/showcase/ui/calendarHome.jsf">Calendar</a></li>                                        
+                                    <li><a href="/showcase/ui/selectCheckboxMenu.jsf">CheckboxMenu</a></li>
+                                    <li><a href="/showcase/ui/colorPicker.jsf">ColorPicker</a></li>
+                                    <li><a href="/showcase/ui/editor.jsf">Editor</a></li>
+                                    <li><a href="/showcase/ui/inplace.jsf" class="ui-state-highlight">Inplace</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/inputMask.jsf">InputMask</a></li>
+                                    <li><a href="/showcase/ui/inputText.jsf">InputText</a></li>
+                                    <li><a href="/showcase/ui/inputTextarea.jsf">InputTextarea</a></li>
+                                    <li><a href="/showcase/ui/keyboard.jsf">Keyboard</a></li>
+                                    <li><a href="/showcase/ui/selectManyButton.jsf">ManyButton</a></li>
+                                    <li><a href="/showcase/ui/selectManyMenu.jsf">ManyMenu</a></li>
+                                    <li><a href="/showcase/ui/selectManyCheckbox.jsf">ManyCheckbox</a></li>
+                                    <li><a href="/showcase/ui/selectOneButton.jsf">OneButton</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/selectOneMenu.jsf">OneMenu</a></li>
+                                    <li><a href="/showcase/ui/selectOneListbox.jsf">OneListbox</a></li>
+                                    <li><a href="/showcase/ui/selectOneRadio.jsf">OneRadio</a></li>
+                                    <li><a href="/showcase/ui/password.jsf">Password</a></li>
+                                    <li><a href="/showcase/ui/rating.jsf">Rating</a></li>
+                                    <li><a href="/showcase/ui/spinner.jsf">Spinner</a></li>
+                                    <li><a href="/showcase/ui/slider.jsf">Slider</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Button</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td><a href="/showcase/ui/button.jsf">Button</a></td>
+                            <td><a href="/showcase/ui/commandButton.jsf">CommandButton</a></td>
+                            <td><a href="/showcase/ui/commandLink.jsf">CommandLink</a></td>
+                            <td><a href="/showcase/ui/splitButton.jsf">SplitButton</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Data</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/carouselHome.jsf">Carousel</a></li>
+                                    <li><a href="/showcase/ui/exporterHome.jsf">DataExporter</a></li>
+                                    <li><a href="/showcase/ui/dataListHome.jsf">DataList</a></li>
+                                    <li><a href="/showcase/ui/datagrid.jsf">DataGrid</a></li>
+                                    <li><a href="/showcase/ui/datatableHome.jsf">DataTable</a></li>
+                                    <li><a href="/showcase/ui/gmapHome.jsf">GMap</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    
+                                    <li><a href="/showcase/ui/mindmap.jsf">Mindmap</a></li>
+                                    <li><a href="/showcase/ui/picklist.jsf">PickList</a></li>
+                                    <li><a href="/showcase/ui/orderList.jsf">OrderList</a></li>
+                                    <li><a href="/showcase/ui/ring.jsf">Ring</a></li>
+                                    <li><a href="/showcase/ui/scheduleHome.jsf">Schedule</a></li>
+                                    <li><a href="/showcase/ui/tagCloud.jsf">TagCloud</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>                                    
+                                    <li><a href="/showcase/ui/treeHome.jsf">Tree</a></li>
+                                    <li><a href="/showcase/ui/treeHorizontalHome.jsf">Tree Horizontal</a></li>
+                                    <li><a href="/showcase/ui/treeTableHome.jsf">TreeTable</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Panel</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/accordionPanelHome.jsf" class="ui-state-highlight">Accordion</a></li>
+                                    <li><a href="/showcase/ui/dashboard.jsf">Dashboard</a></li>
+                                    <li><a href="/showcase/ui/fieldset.jsf">Fieldset</a></li>
+                                    <li><a href="/showcase/ui/layoutHome.jsf">Layout</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/notificationBar.jsf">NotificationBar</a></li>
+                                    <li><a href="/showcase/ui/outputPanel.jsf">OutputPanel</a></li>
+                                    <li><a href="/showcase/ui/panel.jsf">Panel</a></li>
+                                    <li><a href="/showcase/ui/panelGrid.jsf">PanelGrid</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/scrollPanel.jsf">ScrollPanel</a></li>
+                                    <li><a href="/showcase/ui/tabviewHome.jsf">TabView</a></li>
+                                    <li><a href="/showcase/ui/toolbar.jsf">Toolbar</a></li>
+                                    <li><a href="/showcase/ui/wizard.jsf">Wizard</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Overlay</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/confirmDialog.jsf">ConfirmDialog</a></li>
+                                    <li><a href="/showcase/ui/dialogHome.jsf">Dialog</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/lightBox.jsf">LightBox</a></li>
+                                    <li><a href="/showcase/ui/overlayPanel.jsf">OverlayPanel</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/tooltipHome.jsf">Tooltip</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Menu</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/breadCrumb.jsf">BreadCrumb</a></li>
+                                    <li><a href="/showcase/ui/contextMenuHome.jsf">ContextMenu</a></li>
+                                    <li><a href="/showcase/ui/dock.jsf">Dock</a></li>
+                                    <li><a href="/showcase/ui/megaMenu.jsf">MegaMenu</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/menu.jsf">Menu</a></li>
+                                    <li><a href="/showcase/ui/menubar.jsf">Menubar</a></li>
+                                    <li><a href="/showcase/ui/menubutton.jsf">MenuButton</a></li>
+                                    <li><a href="/showcase/ui/panelMenu.jsf">PanelMenu</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/slideMenu.jsf">SlideMenu</a></li>
+                                    <li><a href="/showcase/ui/stack.jsf">Stack</a></li>
+                                    <li><a href="/showcase/ui/tabMenu.jsf">TabMenu</a></li>
+                                    <li><a href="/showcase/ui/tieredMenu.jsf">TieredMenu</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Charts</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/areaChart.jsf">Area</a></li>
+                                    <li><a href="/showcase/ui/barChart.jsf">Bar</a></li>
+                                    <li><a href="/showcase/ui/bubbleChart.jsf">Bubble</a></li>
+                                    <li><a href="/showcase/ui/donutChart.jsf">Donut</a></li>
+                                    <li><a href="/showcase/ui/lineChart.jsf">Line</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/pieChart.jsf">Pie</a></li>
+                                    <li><a href="/showcase/ui/meterGaugeChart.jsf">MeterGauge</a></li>
+                                    <li><a href="/showcase/ui/ohlcChart.jsf">OHLC</a></li>
+                                    <li><a href="/showcase/ui/chartAnimate.jsf">Animate</a></li>
+                                    <li><a href="/showcase/ui/chartExport.jsf">Export</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/interactiveCharts.jsf">Interactive</a></li>
+                                    <li><a href="/showcase/ui/liveChart.jsf">Live Update</a></li>
+                                    <li><a href="/showcase/ui/dynamicImage.jsf">Static</a></li>
+                                    <li><a href="/showcase/ui/chartZoom.jsf">Zoom</a></li>
+                                    <li><a href="/showcase/ui/combinedChart.jsf" class="ui-state-highlight">Combined</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>     
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Message</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:50%"><a href="/showcase/ui/growl.jsf">Growl</a></td>
+                            <td style="width:50%"><a href="/showcase/ui/messages.jsf">Messages</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Multimedia</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/imageCompare.jsf">Compare</a></li>
+                                    <li><a href="/showcase/ui/imageCropper.jsf">Cropper</a></li>
+                                    <li><a href="/showcase/ui/dynamicImage.jsf">DynaImage</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/galleria.jsf">Galleria</a></li>
+                                    <li><a href="/showcase/ui/media.jsf">Media</a></li>
+                                    <li><a href="/showcase/ui/photoCam.jsf">PhotoCam</a></li> 
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/imageSwitch.jsf">Switch</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">File</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadAuto.jsf">Auto</a></li>
+                                    <li><a href="/showcase/ui/fileUploadSimple.jsf">Basic</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadDnd.jsf">DragDrop</a></li>
+                                    <li><a href="/showcase/ui/fileDownload.jsf">Download</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadMultiple.jsf">Multiple</a></li>
+                                    <li><a href="/showcase/ui/fileUploadSingle.jsf">Single</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">DragDrop</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td><a href="/showcase/ui/draggableBasic.jsf">Draggable</a></td>
+                            <td><a href="/showcase/ui/dndGrid.jsf">DataGrid</a></td>
+                            <td><a href="/showcase/ui/dndTable.jsf">DataTable</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="/showcase/ui/droppableBarca.jsf">Football</a></td>
+                            <td><a href="/showcase/ui/dndColumns.jsf">Native</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Misc</h3>
+                <div class="submenu-content" style="margin-bottom:20px">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/blockUI.jsf">BlockUI</a></li>
+                                    <li><a href="/showcase/ui/captchaHome.jsf">Captcha</a></li>
+                                    <li><a href="/showcase/ui/clock.jsf">Clock</a></li>
+                                    <li><a href="/showcase/ui/collector.jsf">Collector</a></li>
+                                    <li><a href="/showcase/ui/defaultCommand.jsf">DefaultCommand</a></li>
+                                    <li><a href="/showcase/ui/effectsHome.jsf">Effects</a></li>
+                                    <li><a href="/showcase/ui/feedReader.jsf">FeedReader</a></li>
+                                    <li><a href="/showcase/ui/focus.jsf">Focus</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/hotkey.jsf">HotKey</a></li>
+                                    <li><a href="/showcase/ui/idlemonitorHome.jsf">IdleMonitor</a></li>
+                                    <li><a href="/showcase/ui/log.jsf">Log</a></li>
+                                    <li><a href="/showcase/ui/outputLabel.jsf">OutputLabel</a></li>
+                                    <li><a href="/showcase/ui/printer.jsf">Printer</a></li>
+                                    <li><a href="/showcase/ui/progressBar.jsf">ProgressBar</a></li>
+                                    <li><a href="/showcase/ui/requestContext.jsf">RequestContext</a></li>
+                                    <li><a href="/showcase/ui/resetInput.jsf">ResetInput</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>       
+                                    <li><a href="/showcase/ui/resizableHome.jsf">Resizable</a></li>
+                                    <li><a href="/showcase/ui/separator.jsf">Separator</a></li>
+                                    <li><a href="/showcase/ui/spacer.jsf">Spacer</a></li>
+                                    <li><a href="/showcase/ui/terminalHome.jsf">Terminal</a></li>
+                                    <li><a href="/showcase/ui/themeswitcher.jsf">Themeswitcher</a></li>
+                                    <li><a href="/showcase/ui/watermark.jsf">Watermark</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="content">
+                <div class="post">
+
+		<h1 class="title ui-widget-header ui-corner-all">FileDownload</h1>
+		<div class="entry">
+			<p>FileDownload is used to stream binary contents like files stored in database to the client. FileDownload
+			is used by attaching it to any JSF command component like button or a link. Additionally presentation
+			of download can be configured with the contentDisposition attribute that takes either &quot;attachment&quot; or &quot;inline&quot; as a value.</p><div id="j_idt19" class="ui-dialog ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow"><div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="j_idt19_title" class="ui-dialog-title">Status</span></div><div class="ui-dialog-content ui-widget-content"><img id="j_idt20" src="/showcase/design/ajaxloadingbar.gif" alt="" /></div></div><script id="j_idt19_s" type="text/javascript">$(function(){PrimeFaces.cw('Dialog','statusDialog',{id:'j_idt19',draggable:false,resizable:false,modal:true});});</script>
+<form id="form" name="form" method="post" action="/showcase/ui/fileDownload.jsf" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="form" value="form" />
+<button id="form:downloadLink" name="form:downloadLink" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" onclick="PrimeFaces.monitorDownload(start, stop);" type="submit"><span class="ui-button-icon-left ui-icon ui-c ui-icon-arrowthick-1-s"></span><span class="ui-button-text ui-c">Download</span></button><script id="form:downloadLink_s" type="text/javascript">PrimeFaces.cw('CommandButton','widget_form_downloadLink',{id:'form:downloadLink'});</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="3388778655361746797:1598017011329533475" autocomplete="off" />
+</form>
+						
+			<h3>Source</h3><div id="j_idt22" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-hidden-container ui-tabs-top"><ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist"><li class="ui-state-default ui-tabs-selected ui-state-active ui-corner-top" role="tab" aria-expanded="true"><a href="#j_idt22:j_idt23">fileDownload.xhtml</a></li><li class="ui-state-default ui-corner-top" role="tab" aria-expanded="false"><a href="#j_idt22:j_idt25">FileDownloadController.java</a></li></ul><div class="ui-tabs-panels"><div id="j_idt22:j_idt23" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="false">
+                    <pre name="code" class="xml">
+&lt;p:dialog modal=&quot;true&quot; widgetVar=&quot;statusDialog&quot; header=&quot;Status&quot; draggable=&quot;false&quot; closable=&quot;false&quot; resizable=&quot;false&quot;&gt;
+    &lt;p:graphicImage value=&quot;/design/ajaxloadingbar.gif&quot; /&gt;
+&lt;/p:dialog&gt;
+
+&lt;h:form id=&quot;form&quot;&gt;
+
+&lt;p:commandButton id=&quot;downloadLink&quot; value=&quot;Download&quot; ajax=&quot;false&quot; onclick=&quot;PrimeFaces.monitorDownload(start, stop)&quot; 
+        icon=&quot;ui-icon-arrowthichk-s&quot;&gt;
+    &lt;p:fileDownload value=&quot;#{fileDownloadController.file}&quot; /&gt;
+&lt;/p:commandButton&gt;
+
+&lt;/h:form&gt;
+
+        &lt;script type=&quot;text/javascript&quot;&gt;
+function start() {
+    statusDialog.show();
+}
+
+function stop() {
+    statusDialog.hide();
+}
+        &lt;/script&gt;
+                    </pre></div><div id="j_idt22:j_idt25" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden" role="tabpanel" aria-hidden="true">
+                    <pre name="code" class="java">						
+package org.primefaces.examples.view;
+
+import java.io.InputStream;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+public class FileDownloadController {
+
+	private StreamedContent file;
+	
+	public FileDownloadController() {        
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(&quot;/images/optimusprime.jpg&quot;);
+		file = new DefaultStreamedContent(stream, &quot;image/jpg&quot;, &quot;downloaded_optimus.jpg&quot;);
+	}
+
+    public StreamedContent getFile() {
+        return file;
+    }  
+}
+                    </pre></div></div><input type="hidden" id="j_idt22_activeIndex" name="j_idt22_activeIndex" value="0" autocomplete="off" /></div><script id="j_idt22_s" type="text/javascript">PrimeFaces.cw('TabView','widget_j_idt22',{id:'j_idt22',effectDuration:'normal'});</script>
+
+		</div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+        </div>
+
+		<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
+			<p class="copyright">Running PrimeFaces-4.0-SNAPSHOT on Mojarra-2.1.20</p>
+		</div><div id="j_idt29" style="width:64px;height:64px;position:fixed;right:5px;bottom:5px"><div id="j_idt29_start" style="display:none"><img id="j_idt30" src="/showcase/images/loading.gif" alt="" /></div><div id="j_idt29_complete" style="display:none"></div></div><script id="j_idt29_s" type="text/javascript">PrimeFaces.cw('AjaxStatus','widget_j_idt29',{id:'j_idt29'});widget_j_idt29.bindFacet('ajaxStart', 'start');widget_j_idt29.bindFacet('ajaxComplete', 'complete');</script></body>
+		<script language="javascript" src="/showcase/syntaxhighlighter/scripts/sh.js"></script>
+		<script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '/showcase/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('code');
+		</script>
+</html><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <title>PrimeFaces - ShowCase</title><link type="text/css" rel="stylesheet" href="/showcase/javax.faces.resource/theme.css.jsf?ln=primefaces-aristo" /><link type="text/css" rel="stylesheet" href="/showcase/javax.faces.resource/primefaces.css.jsf?ln=primefaces" /><script type="text/javascript" src="/showcase/javax.faces.resource/jquery/jquery.js.jsf?ln=primefaces"></script><script type="text/javascript" src="/showcase/javax.faces.resource/jquery/jquery-plugins.js.jsf?ln=primefaces"></script><script type="text/javascript" src="/showcase/javax.faces.resource/primefaces.js.jsf?ln=primefaces"></script>
+        
+        <link type="text/css" rel="stylesheet" href="/showcase/css/default.css" />
+        <link type="text/css" rel="stylesheet" href="/showcase/css/syntaxhighlighter/syntaxhighlighter.css" />
+        <style type="text/css">
+        </style>
+        
+        <script type="text/javascript">
+            //<![CDATA[
+function start() {
+    statusDialog.show();
+}
+
+function stop() {
+    statusDialog.hide();
+}
+            //]]>
+        </script>
+        
+        <script type="text/javascript">
+            $(function() {$('.sidebar a').hover(function() {$(this).toggleClass('ui-state-hover');})});
+        </script>
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12200033-3']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+          </script></head><body>
+
+		<div id="header" class="ui-widget ui-widget-header">
+			<div id="logo">
+				<img src="/showcase/images/logo.png" alt="Logo" />
+			</div>
+            
+            <div id="menu" class="ui-widget">
+                <ul id="main">
+                    <li class="current_page_item"><a href="/showcase/ui/home.jsf" style="background:url('../design/ui.png') no-repeat center left;">Components</a></li>
+                    <li><a href="/showcase/mobile/index.jsf" style="background:url('../design/iphone.png') no-repeat center left;">Mobile</a></li>
+                    <li><a href="/showcase/push/index.jsf" style="background:url('../design/push.png') no-repeat center left">Push</a></li>
+                    <li class="current_page_item"><a href="/showcase/ui/macosx.jsf" style="background:url('../design/mac.png') no-repeat center left;">Mock OS X</a></li>
+                </ul>
+            </div>
+            
+            <div id="globalthemeswitcher">
+<form id="j_idt9" name="j_idt9" method="post" action="/showcase/ui/fileDownload.jsf" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt9" value="j_idt9" />
+<div id="j_idt9:j_idt10" class="ui-selectonemenu ui-widget ui-state-default ui-corner-all ui-helper-clearfix" style="width:175px;"><div class="ui-helper-hidden-accessible"><select id="j_idt9:j_idt10_input" name="j_idt9:j_idt10_input"><option value="">Choose Theme</option><option value="afterdark">afterdark</option><option value="afternoon">afternoon</option><option value="afterwork">afterwork</option><option value="aristo" selected="selected">aristo</option><option value="black-tie">black-tie</option><option value="blitzer">blitzer</option><option value="bluesky">bluesky</option><option value="bootstrap">bootstrap</option><option value="casablanca">casablanca</option><option value="cruze">cruze</option><option value="cupertino">cupertino</option><option value="dark-hive">dark-hive</option><option value="dot-luv">dot-luv</option><option value="eggplant">eggplant</option><option value="excite-bike">excite-bike</option><option value="flick">flick</option><option value="glass-x">glass-x</option><option value="home">home</option><option value="hot-sneaks">hot-sneaks</option><option value="humanity">humanity</option><option value="le-frog">le-frog</option><option value="midnight">midnight</option><option value="mint-choc">mint-choc</option><option value="overcast">overcast</option><option value="pepper-grinder">pepper-grinder</option><option value="redmond">redmond</option><option value="rocket">rocket</option><option value="sam">sam</option><option value="smoothness">smoothness</option><option value="south-street">south-street</option><option value="start">start</option><option value="sunny">sunny</option><option value="swanky-purse">swanky-purse</option><option value="trontastic">trontastic</option><option value="ui-darkness">ui-darkness</option><option value="ui-lightness">ui-lightness</option><option value="vader">vader</option></select></div><div class="ui-helper-hidden-accessible"><input id="j_idt9:j_idt10_focus" name="j_idt9:j_idt10_focus" type="text" /></div><label id="j_idt9:j_idt10_label" class="ui-selectonemenu-label ui-inputfield ui-corner-all">&nbsp;</label><div class="ui-selectonemenu-trigger ui-state-default ui-corner-right"><span class="ui-icon ui-icon-triangle-1-s"></span></div><div id="j_idt9:j_idt10_panel" class="ui-selectonemenu-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow"><div class="ui-selectonemenu-items-wrapper" style="height:200px"><table class="ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset"><tbody><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="Choose Theme"><td colspan="2">Choose Theme</td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afterdark"><td><img src="/showcase/javax.faces.resource/images/themes/afterdark.png.jsf" /></td><td>
+                            afterdark
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afternoon"><td><img src="/showcase/javax.faces.resource/images/themes/afternoon.png.jsf" /></td><td>
+                            afternoon
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="afterwork"><td><img src="/showcase/javax.faces.resource/images/themes/afterwork.png.jsf" /></td><td>
+                            afterwork
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="aristo"><td><img src="/showcase/javax.faces.resource/images/themes/aristo.png.jsf" /></td><td>
+                            aristo
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="black-tie"><td><img src="/showcase/javax.faces.resource/images/themes/black-tie.png.jsf" /></td><td>
+                            black-tie
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="blitzer"><td><img src="/showcase/javax.faces.resource/images/themes/blitzer.png.jsf" /></td><td>
+                            blitzer
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="bluesky"><td><img src="/showcase/javax.faces.resource/images/themes/bluesky.png.jsf" /></td><td>
+                            bluesky
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="bootstrap"><td><img src="/showcase/javax.faces.resource/images/themes/bootstrap.png.jsf" /></td><td>
+                            bootstrap
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="casablanca"><td><img src="/showcase/javax.faces.resource/images/themes/casablanca.png.jsf" /></td><td>
+                            casablanca
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="cruze"><td><img src="/showcase/javax.faces.resource/images/themes/cruze.png.jsf" /></td><td>
+                            cruze
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="cupertino"><td><img src="/showcase/javax.faces.resource/images/themes/cupertino.png.jsf" /></td><td>
+                            cupertino
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="dark-hive"><td><img src="/showcase/javax.faces.resource/images/themes/dark-hive.png.jsf" /></td><td>
+                            dark-hive
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="dot-luv"><td><img src="/showcase/javax.faces.resource/images/themes/dot-luv.png.jsf" /></td><td>
+                            dot-luv
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="eggplant"><td><img src="/showcase/javax.faces.resource/images/themes/eggplant.png.jsf" /></td><td>
+                            eggplant
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="excite-bike"><td><img src="/showcase/javax.faces.resource/images/themes/excite-bike.png.jsf" /></td><td>
+                            excite-bike
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="flick"><td><img src="/showcase/javax.faces.resource/images/themes/flick.png.jsf" /></td><td>
+                            flick
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="glass-x"><td><img src="/showcase/javax.faces.resource/images/themes/glass-x.png.jsf" /></td><td>
+                            glass-x
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="home"><td><img src="/showcase/javax.faces.resource/images/themes/home.png.jsf" /></td><td>
+                            home
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="hot-sneaks"><td><img src="/showcase/javax.faces.resource/images/themes/hot-sneaks.png.jsf" /></td><td>
+                            hot-sneaks
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="humanity"><td><img src="/showcase/javax.faces.resource/images/themes/humanity.png.jsf" /></td><td>
+                            humanity
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="le-frog"><td><img src="/showcase/javax.faces.resource/images/themes/le-frog.png.jsf" /></td><td>
+                            le-frog
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="midnight"><td><img src="/showcase/javax.faces.resource/images/themes/midnight.png.jsf" /></td><td>
+                            midnight
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="mint-choc"><td><img src="/showcase/javax.faces.resource/images/themes/mint-choc.png.jsf" /></td><td>
+                            mint-choc
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="overcast"><td><img src="/showcase/javax.faces.resource/images/themes/overcast.png.jsf" /></td><td>
+                            overcast
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="pepper-grinder"><td><img src="/showcase/javax.faces.resource/images/themes/pepper-grinder.png.jsf" /></td><td>
+                            pepper-grinder
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="redmond"><td><img src="/showcase/javax.faces.resource/images/themes/redmond.png.jsf" /></td><td>
+                            redmond
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="rocket"><td><img src="/showcase/javax.faces.resource/images/themes/rocket.png.jsf" /></td><td>
+                            rocket
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="sam"><td><img src="/showcase/javax.faces.resource/images/themes/sam.png.jsf" /></td><td>
+                            sam
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="smoothness"><td><img src="/showcase/javax.faces.resource/images/themes/smoothness.png.jsf" /></td><td>
+                            smoothness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="south-street"><td><img src="/showcase/javax.faces.resource/images/themes/south-street.png.jsf" /></td><td>
+                            south-street
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="start"><td><img src="/showcase/javax.faces.resource/images/themes/start.png.jsf" /></td><td>
+                            start
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="sunny"><td><img src="/showcase/javax.faces.resource/images/themes/sunny.png.jsf" /></td><td>
+                            sunny
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="swanky-purse"><td><img src="/showcase/javax.faces.resource/images/themes/swanky-purse.png.jsf" /></td><td>
+                            swanky-purse
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="trontastic"><td><img src="/showcase/javax.faces.resource/images/themes/trontastic.png.jsf" /></td><td>
+                            trontastic
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="ui-darkness"><td><img src="/showcase/javax.faces.resource/images/themes/ui-darkness.png.jsf" /></td><td>
+                            ui-darkness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="ui-lightness"><td><img src="/showcase/javax.faces.resource/images/themes/ui-lightness.png.jsf" /></td><td>
+                            ui-lightness
+                        </td></tr><tr class="ui-selectonemenu-item ui-selectonemenu-row ui-widget-content" data-label="vader"><td><img src="/showcase/javax.faces.resource/images/themes/vader.png.jsf" /></td><td>
+                            vader
+                        </td></tr></tbody></table></div></div></div><script id="j_idt9:j_idt10_s" type="text/javascript">$(function(){PrimeFaces.cw('ThemeSwitcher','widget_j_idt9_j_idt10',{id:'j_idt9:j_idt10',effect:'fade',behaviors:{change:function(event) {PrimeFaces.ab({source:'j_idt9:j_idt10',event:'valueChange',process:'j_idt9:j_idt10'}, arguments[1]);}}});});</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="-214544409991801545:-6210266322928271778" autocomplete="off" />
+</form>
+            </div>
+		</div>
+
+        <div id="page" class="ui-widget">
+            <div id="sidebar" class="ui-widget-content ui-corner-bottom ui-helper-clearfix ui-shadow">
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title" style="margin-top:2px">Ajax Core</h3>
+                <div class="ui-widget submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/pprUpdate.jsf">Basics</a></li>
+                                    <li><a href="/showcase/ui/pprPartialTree.jsf">Partial Processing</a></li>
+                                    <li><a href="/showcase/ui/partialSubmit.jsf">Partial Submit</a></li>
+                                    <li><a href="/showcase/ui/pprAjaxValidations.jsf">Validations</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/selectors.jsf">Selectors</a></li>
+                                    <li><a href="/showcase/ui/poll.jsf">Polling</a></li>
+                                    <li><a href="/showcase/ui/remoteCommand.jsf">RemoteCommand</a></li>
+                                    <li><a href="/showcase/ui/ajaxStatusHome.jsf">AjaxStatus</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/ajaxifyKeyEvents.jsf">Events</a></li>
+                                    <li><a href="/showcase/ui/pprSelect.jsf">Selects</a></li>                                    
+                                    <li><a href="/showcase/ui/ajaxifyAction.jsf">Listeners</a></li>
+                                    <li><a href="/showcase/ui/pprCounter.jsf">Counter</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Input</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/autocompleteHome.jsf">AutoComplete</a></li>
+                                    <li><a href="/showcase/ui/selectBooleanButton.jsf">BooleanButton</a></li>
+                                    <li><a href="/showcase/ui/selectBooleanCheckbox.jsf">BoolCheckbox</a></li>
+                                    <li><a href="/showcase/ui/calendarHome.jsf">Calendar</a></li>                                        
+                                    <li><a href="/showcase/ui/selectCheckboxMenu.jsf">CheckboxMenu</a></li>
+                                    <li><a href="/showcase/ui/colorPicker.jsf">ColorPicker</a></li>
+                                    <li><a href="/showcase/ui/editor.jsf">Editor</a></li>
+                                    <li><a href="/showcase/ui/inplace.jsf" class="ui-state-highlight">Inplace</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/inputMask.jsf">InputMask</a></li>
+                                    <li><a href="/showcase/ui/inputText.jsf">InputText</a></li>
+                                    <li><a href="/showcase/ui/inputTextarea.jsf">InputTextarea</a></li>
+                                    <li><a href="/showcase/ui/keyboard.jsf">Keyboard</a></li>
+                                    <li><a href="/showcase/ui/selectManyButton.jsf">ManyButton</a></li>
+                                    <li><a href="/showcase/ui/selectManyMenu.jsf">ManyMenu</a></li>
+                                    <li><a href="/showcase/ui/selectManyCheckbox.jsf">ManyCheckbox</a></li>
+                                    <li><a href="/showcase/ui/selectOneButton.jsf">OneButton</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/selectOneMenu.jsf">OneMenu</a></li>
+                                    <li><a href="/showcase/ui/selectOneListbox.jsf">OneListbox</a></li>
+                                    <li><a href="/showcase/ui/selectOneRadio.jsf">OneRadio</a></li>
+                                    <li><a href="/showcase/ui/password.jsf">Password</a></li>
+                                    <li><a href="/showcase/ui/rating.jsf">Rating</a></li>
+                                    <li><a href="/showcase/ui/spinner.jsf">Spinner</a></li>
+                                    <li><a href="/showcase/ui/slider.jsf">Slider</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Button</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td><a href="/showcase/ui/button.jsf">Button</a></td>
+                            <td><a href="/showcase/ui/commandButton.jsf">CommandButton</a></td>
+                            <td><a href="/showcase/ui/commandLink.jsf">CommandLink</a></td>
+                            <td><a href="/showcase/ui/splitButton.jsf">SplitButton</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Data</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/carouselHome.jsf">Carousel</a></li>
+                                    <li><a href="/showcase/ui/exporterHome.jsf">DataExporter</a></li>
+                                    <li><a href="/showcase/ui/dataListHome.jsf">DataList</a></li>
+                                    <li><a href="/showcase/ui/datagrid.jsf">DataGrid</a></li>
+                                    <li><a href="/showcase/ui/datatableHome.jsf">DataTable</a></li>
+                                    <li><a href="/showcase/ui/gmapHome.jsf">GMap</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    
+                                    <li><a href="/showcase/ui/mindmap.jsf">Mindmap</a></li>
+                                    <li><a href="/showcase/ui/picklist.jsf">PickList</a></li>
+                                    <li><a href="/showcase/ui/orderList.jsf">OrderList</a></li>
+                                    <li><a href="/showcase/ui/ring.jsf">Ring</a></li>
+                                    <li><a href="/showcase/ui/scheduleHome.jsf">Schedule</a></li>
+                                    <li><a href="/showcase/ui/tagCloud.jsf">TagCloud</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>                                    
+                                    <li><a href="/showcase/ui/treeHome.jsf">Tree</a></li>
+                                    <li><a href="/showcase/ui/treeHorizontalHome.jsf">Tree Horizontal</a></li>
+                                    <li><a href="/showcase/ui/treeTableHome.jsf">TreeTable</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Panel</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/accordionPanelHome.jsf" class="ui-state-highlight">Accordion</a></li>
+                                    <li><a href="/showcase/ui/dashboard.jsf">Dashboard</a></li>
+                                    <li><a href="/showcase/ui/fieldset.jsf">Fieldset</a></li>
+                                    <li><a href="/showcase/ui/layoutHome.jsf">Layout</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/notificationBar.jsf">NotificationBar</a></li>
+                                    <li><a href="/showcase/ui/outputPanel.jsf">OutputPanel</a></li>
+                                    <li><a href="/showcase/ui/panel.jsf">Panel</a></li>
+                                    <li><a href="/showcase/ui/panelGrid.jsf">PanelGrid</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/scrollPanel.jsf">ScrollPanel</a></li>
+                                    <li><a href="/showcase/ui/tabviewHome.jsf">TabView</a></li>
+                                    <li><a href="/showcase/ui/toolbar.jsf">Toolbar</a></li>
+                                    <li><a href="/showcase/ui/wizard.jsf">Wizard</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Overlay</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/confirmDialog.jsf">ConfirmDialog</a></li>
+                                    <li><a href="/showcase/ui/dialogHome.jsf">Dialog</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/lightBox.jsf">LightBox</a></li>
+                                    <li><a href="/showcase/ui/overlayPanel.jsf">OverlayPanel</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/tooltipHome.jsf">Tooltip</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Menu</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/breadCrumb.jsf">BreadCrumb</a></li>
+                                    <li><a href="/showcase/ui/contextMenuHome.jsf">ContextMenu</a></li>
+                                    <li><a href="/showcase/ui/dock.jsf">Dock</a></li>
+                                    <li><a href="/showcase/ui/megaMenu.jsf">MegaMenu</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/menu.jsf">Menu</a></li>
+                                    <li><a href="/showcase/ui/menubar.jsf">Menubar</a></li>
+                                    <li><a href="/showcase/ui/menubutton.jsf">MenuButton</a></li>
+                                    <li><a href="/showcase/ui/panelMenu.jsf">PanelMenu</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/slideMenu.jsf">SlideMenu</a></li>
+                                    <li><a href="/showcase/ui/stack.jsf">Stack</a></li>
+                                    <li><a href="/showcase/ui/tabMenu.jsf">TabMenu</a></li>
+                                    <li><a href="/showcase/ui/tieredMenu.jsf">TieredMenu</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Charts</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/areaChart.jsf">Area</a></li>
+                                    <li><a href="/showcase/ui/barChart.jsf">Bar</a></li>
+                                    <li><a href="/showcase/ui/bubbleChart.jsf">Bubble</a></li>
+                                    <li><a href="/showcase/ui/donutChart.jsf">Donut</a></li>
+                                    <li><a href="/showcase/ui/lineChart.jsf">Line</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/pieChart.jsf">Pie</a></li>
+                                    <li><a href="/showcase/ui/meterGaugeChart.jsf">MeterGauge</a></li>
+                                    <li><a href="/showcase/ui/ohlcChart.jsf">OHLC</a></li>
+                                    <li><a href="/showcase/ui/chartAnimate.jsf">Animate</a></li>
+                                    <li><a href="/showcase/ui/chartExport.jsf">Export</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/interactiveCharts.jsf">Interactive</a></li>
+                                    <li><a href="/showcase/ui/liveChart.jsf">Live Update</a></li>
+                                    <li><a href="/showcase/ui/dynamicImage.jsf">Static</a></li>
+                                    <li><a href="/showcase/ui/chartZoom.jsf">Zoom</a></li>
+                                    <li><a href="/showcase/ui/combinedChart.jsf" class="ui-state-highlight">Combined</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>     
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Message</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:50%"><a href="/showcase/ui/growl.jsf">Growl</a></td>
+                            <td style="width:50%"><a href="/showcase/ui/messages.jsf">Messages</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Multimedia</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/imageCompare.jsf">Compare</a></li>
+                                    <li><a href="/showcase/ui/imageCropper.jsf">Cropper</a></li>
+                                    <li><a href="/showcase/ui/dynamicImage.jsf">DynaImage</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/galleria.jsf">Galleria</a></li>
+                                    <li><a href="/showcase/ui/media.jsf">Media</a></li>
+                                    <li><a href="/showcase/ui/photoCam.jsf">PhotoCam</a></li> 
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/imageSwitch.jsf">Switch</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">File</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadAuto.jsf">Auto</a></li>
+                                    <li><a href="/showcase/ui/fileUploadSimple.jsf">Basic</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadDnd.jsf">DragDrop</a></li>
+                                    <li><a href="/showcase/ui/fileDownload.jsf">Download</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/fileUploadMultiple.jsf">Multiple</a></li>
+                                    <li><a href="/showcase/ui/fileUploadSingle.jsf">Single</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">DragDrop</h3>
+                <div class="submenu-content">
+                    <table>
+                        <tr>
+                            <td><a href="/showcase/ui/draggableBasic.jsf">Draggable</a></td>
+                            <td><a href="/showcase/ui/dndGrid.jsf">DataGrid</a></td>
+                            <td><a href="/showcase/ui/dndTable.jsf">DataTable</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="/showcase/ui/droppableBarca.jsf">Football</a></td>
+                            <td><a href="/showcase/ui/dndColumns.jsf">Native</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3 class="ui-widget ui-widget-header ui-corner-all submenu-title">Misc</h3>
+                <div class="submenu-content" style="margin-bottom:20px">
+                    <table>
+                        <tr>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/blockUI.jsf">BlockUI</a></li>
+                                    <li><a href="/showcase/ui/captchaHome.jsf">Captcha</a></li>
+                                    <li><a href="/showcase/ui/clock.jsf">Clock</a></li>
+                                    <li><a href="/showcase/ui/collector.jsf">Collector</a></li>
+                                    <li><a href="/showcase/ui/defaultCommand.jsf">DefaultCommand</a></li>
+                                    <li><a href="/showcase/ui/effectsHome.jsf">Effects</a></li>
+                                    <li><a href="/showcase/ui/feedReader.jsf">FeedReader</a></li>
+                                    <li><a href="/showcase/ui/focus.jsf">Focus</a></li>
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>
+                                    <li><a href="/showcase/ui/hotkey.jsf">HotKey</a></li>
+                                    <li><a href="/showcase/ui/idlemonitorHome.jsf">IdleMonitor</a></li>
+                                    <li><a href="/showcase/ui/log.jsf">Log</a></li>
+                                    <li><a href="/showcase/ui/outputLabel.jsf">OutputLabel</a></li>
+                                    <li><a href="/showcase/ui/printer.jsf">Printer</a></li>
+                                    <li><a href="/showcase/ui/progressBar.jsf">ProgressBar</a></li>
+                                    <li><a href="/showcase/ui/requestContext.jsf">RequestContext</a></li>
+                                    <li><a href="/showcase/ui/resetInput.jsf">ResetInput</a></li>
+                                    
+                                </ul>
+                            </td>
+                            <td style="width:33%">
+                                <ul>       
+                                    <li><a href="/showcase/ui/resizableHome.jsf">Resizable</a></li>
+                                    <li><a href="/showcase/ui/separator.jsf">Separator</a></li>
+                                    <li><a href="/showcase/ui/spacer.jsf">Spacer</a></li>
+                                    <li><a href="/showcase/ui/terminalHome.jsf">Terminal</a></li>
+                                    <li><a href="/showcase/ui/themeswitcher.jsf">Themeswitcher</a></li>
+                                    <li><a href="/showcase/ui/watermark.jsf">Watermark</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="content">
+                <div class="post">
+
+		<h1 class="title ui-widget-header ui-corner-all">FileDownload</h1>
+		<div class="entry">
+			<p>FileDownload is used to stream binary contents like files stored in database to the client. FileDownload
+			is used by attaching it to any JSF command component like button or a link. Additionally presentation
+			of download can be configured with the contentDisposition attribute that takes either &quot;attachment&quot; or &quot;inline&quot; as a value.</p><div id="j_idt19" class="ui-dialog ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow"><div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="j_idt19_title" class="ui-dialog-title">Status</span></div><div class="ui-dialog-content ui-widget-content"><img id="j_idt20" src="/showcase/design/ajaxloadingbar.gif" alt="" /></div></div><script id="j_idt19_s" type="text/javascript">$(function(){PrimeFaces.cw('Dialog','statusDialog',{id:'j_idt19',draggable:false,resizable:false,modal:true});});</script>
+<form id="form" name="form" method="post" action="/showcase/ui/fileDownload.jsf" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="form" value="form" />
+<button id="form:downloadLink" name="form:downloadLink" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" onclick="PrimeFaces.monitorDownload(start, stop);" type="submit"><span class="ui-button-icon-left ui-icon ui-c ui-icon-arrowthick-1-s"></span><span class="ui-button-text ui-c">Download</span></button><script id="form:downloadLink_s" type="text/javascript">PrimeFaces.cw('CommandButton','widget_form_downloadLink',{id:'form:downloadLink'});</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="-214544409991801545:-6210266322928271778" autocomplete="off" />
+</form>
+						
+			<h3>Source</h3><div id="j_idt22" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-hidden-container ui-tabs-top"><ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist"><li class="ui-state-default ui-tabs-selected ui-state-active ui-corner-top" role="tab" aria-expanded="true"><a href="#j_idt22:j_idt23">fileDownload.xhtml</a></li><li class="ui-state-default ui-corner-top" role="tab" aria-expanded="false"><a href="#j_idt22:j_idt25">FileDownloadController.java</a></li></ul><div class="ui-tabs-panels"><div id="j_idt22:j_idt23" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="false">
+                    <pre name="code" class="xml">
+&lt;p:dialog modal=&quot;true&quot; widgetVar=&quot;statusDialog&quot; header=&quot;Status&quot; draggable=&quot;false&quot; closable=&quot;false&quot; resizable=&quot;false&quot;&gt;
+    &lt;p:graphicImage value=&quot;/design/ajaxloadingbar.gif&quot; /&gt;
+&lt;/p:dialog&gt;
+
+&lt;h:form id=&quot;form&quot;&gt;
+
+&lt;p:commandButton id=&quot;downloadLink&quot; value=&quot;Download&quot; ajax=&quot;false&quot; onclick=&quot;PrimeFaces.monitorDownload(start, stop)&quot; 
+        icon=&quot;ui-icon-arrowthichk-s&quot;&gt;
+    &lt;p:fileDownload value=&quot;#{fileDownloadController.file}&quot; /&gt;
+&lt;/p:commandButton&gt;
+
+&lt;/h:form&gt;
+
+        &lt;script type=&quot;text/javascript&quot;&gt;
+function start() {
+    statusDialog.show();
+}
+
+function stop() {
+    statusDialog.hide();
+}
+        &lt;/script&gt;
+                    </pre></div><div id="j_idt22:j_idt25" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-helper-hidden" role="tabpanel" aria-hidden="true">
+                    <pre name="code" class="java">						
+package org.primefaces.examples.view;
+
+import java.io.InputStream;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+public class FileDownloadController {
+
+	private StreamedContent file;
+	
+	public FileDownloadController() {        
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(&quot;/images/optimusprime.jpg&quot;);
+		file = new DefaultStreamedContent(stream, &quot;image/jpg&quot;, &quot;downloaded_optimus.jpg&quot;);
+	}
+
+    public StreamedContent getFile() {
+        return file;
+    }  
+}
+                    </pre></div></div><input type="hidden" id="j_idt22_activeIndex" name="j_idt22_activeIndex" value="0" autocomplete="off" /></div><script id="j_idt22_s" type="text/javascript">PrimeFaces.cw('TabView','widget_j_idt22',{id:'j_idt22',effectDuration:'normal'});</script>
+
+		</div>
+                </div>
+            </div>
+
+            <div style="clear: both;"></div>
+        </div>
+
+		<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
+			<p class="copyright">Running PrimeFaces-4.0-SNAPSHOT on Mojarra-2.1.20</p>
+		</div><div id="j_idt29" style="width:64px;height:64px;position:fixed;right:5px;bottom:5px"><div id="j_idt29_start" style="display:none"><img id="j_idt30" src="/showcase/images/loading.gif" alt="" /></div><div id="j_idt29_complete" style="display:none"></div></div><script id="j_idt29_s" type="text/javascript">PrimeFaces.cw('AjaxStatus','widget_j_idt29',{id:'j_idt29'});widget_j_idt29.bindFacet('ajaxStart', 'start');widget_j_idt29.bindFacet('ajaxComplete', 'complete');</script></body>
+		<script language="javascript" src="/showcase/syntaxhighlighter/scripts/sh.js"></script>
+		<script language="javascript">
+			dp.SyntaxHighlighter.ClipboardSwf = '/showcase/syntaxhighlighter/scripts/clipboard.swf';
+			dp.SyntaxHighlighter.HighlightAll('code');
+		</script>
+</html>

@@ -1,0 +1,634 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:ui="http://java.sun.com/jsf/facelets">     
+
+    <ui:composition template="/templateCortexMenuSuperior.xhtml">
+        <ui:define name="content">
+            <sec:isAuthenticated>
+                <sec:ifAllGranted roles="ROLE_ADM"  >
+
+                    <h:form></h:form>            
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" onerror="statusDialog.hide();" oncomplete="statusDialog.hide();"  />
+                    <p:dialog 
+                        modal="true" position="center" widgetVar="statusDialog" header="Processando..."
+                        draggable="false" closable="false"
+                        resizable="false">
+                        <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                            <b> Por favor Aguarde</b></center>
+                    </p:dialog>
+
+                    <p:dialog 
+                        modal="true" position="center" widgetVar="cidadesDialog" header="Carregando Cidades..."
+                        draggable="false" closable="false" 
+                        resizable="false">
+                        <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                            <b>Por favor Aguarde</b></center>
+                    </p:dialog>
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Exibição dos Usuários Cadastrados
+                    *********************************************
+                    *********************************************
+                    --> 
+                    <h:form id="formUsuarios"  prependId="false" >  
+
+
+
+                        <p:menubar  autoDisplay="true"  >
+
+                            <p:menuitem value="Menu Principal" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/index.jsf"  icon="ui-icon-disk" />                         
+                            <p:submenu  label="Usuários" icon="ui-icon-person" >                              
+                                <p:menuitem value="Novo Usuário" id="btnAdicionaUsuario" actionListener="#{usuarioController.prepararAdicionarUsuario}" 
+                                            update=":dialogUsuario, :formInserir"                                             
+                                            oncomplete="inserir.show();"
+                                            icon="ui-icon-newwin"
+                                            />     
+                                <p:separator />
+
+                            </p:submenu>
+
+
+                            <p:submenu label="Logout" icon="ui-icon-extlink" >                        
+                                <p:menuitem value="Sair do Sistema"   url="/j_spring_security_logout" icon="ui-icon-extlink"/>
+                            </p:submenu>
+
+
+
+                        </p:menubar>
+
+
+                        <br/>
+
+                        <p:growl id="aviso" />
+
+
+                        <p:dataTable  id="tabela" widgetVar="tabelaUsuarios" var="usuarioList" value="#{usuarioController.usuarioDataModel}"  
+                                      paginator="true" rows="5"                               
+                                      rowsPerPageTemplate="5,8,13"
+                                      emptyMessage="Nenhum usuário encontrado!"
+                                      selection="#{usuarioController.selectedUsuario}" selectionMode="single"                             
+                                      first="#{usuarioController.usuarioDataModel.rowIndex}"                                      
+                                      filteredValue="#{usuarioController.filteredUsuarios}"                                                                            
+                                      >  
+                            
+
+                            <p:ajax event="rowSelect"   
+                                    update=":dialogAlteraUsuario, :formAlterar" listener="#{usuarioController.onRowSelect}" oncomplete="alterar.show()" />                              
+
+
+                            <f:facet name="header">
+                                Lista de Usuários
+                                <div style="text-align: right;">
+                                    <p:outputPanel>                                  
+                                        <h:outputText value="Procurar em todos os campos:" />
+                                        <h:inputText id="globalFilter" onkeyup="if (event.keyCode === 13)
+                                                    tabelaUsuarios.filter();"
+                                                     onkeypress="if (event.keyCode === 13)
+                                                    tabelaUsuarios.filter();"
+                                                     style="width:250px"
+                                                     />
+                                    </p:outputPanel>
+                                </div>
+                            </f:facet>
+
+                            <p:column   filterBy="#{usuarioList.nome}"  headerText="Nome" filterMatchMode="contains">                  
+                                <h:outputText value="#{usuarioList.nome}" />
+                            </p:column>
+                            <p:column filterBy="#{usuarioList.cpf}"  headerText="CPF" filterMatchMode="contains">                    
+                                <h:outputText value="#{usuarioList.cpf}"/>
+                            </p:column>
+                            <p:column filterBy="#{usuarioList.matricula}"  headerText="Matrícula" filterMatchMode="contains">                    
+                                <h:outputText value="#{usuarioList.matricula}"/>
+                            </p:column>
+                            <p:column filterBy="#{usuarioList.email}"  headerText="Email" filterMatchMode="contains" >                    
+                                <h:outputText value="#{usuarioList.email}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:outputText style="color: green;font-weight: bold;" value="Ativo"  rendered="#{usuarioList.enable==true}" />
+                                <h:outputText style="color: red;font-weight: bold;" value="Inativo"  rendered="#{usuarioList.enable==false}" />
+                            </p:column>
+
+
+                            
+
+
+
+                          
+
+                        </p:dataTable>  
+
+
+                    </h:form> 
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Inclusão de um novo Usuário
+                    *********************************************
+                    *********************************************
+                    -->                    
+
+
+
+                    <p:dialog header="Cadastro de Usuário" id="dialogUsuario"  widgetVar="inserir" maximizable="true" closable="false" style="overflow: scroll;overflow-y: scroll;"  showEffect="fade" hideEffect="scale" modal="true"  width="1200" >    
+
+                        <h:form id="formInserir" style="font-size: small;" prependId="false"  >
+
+
+
+                            <p:focus context="formInserir" />
+                            <h:panelGrid  id="pnlGrdinserirUsuario" columns="4">
+
+                                Status do Usuário*:
+                                <p:selectOneMenu  value="#{usuarioController.usuarioEdit.enable}"  label="Status" required="true"  >
+                                    <f:selectItem itemValue="#{true}" itemLabel="Ativo"  />
+                                    <f:selectItem itemValue="#{false}" itemLabel="Inativo" />                                                                    
+                                </p:selectOneMenu>
+
+
+
+
+
+                                Login do Usuário*:
+                                <p:inputText value="#{usuarioController.usuarioEdit.username}" required="true" label="Login" style="width:400px;"
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+
+
+
+
+
+
+                                Senha*:
+                                <p:password id="senhaAcessoInserir" value="#{usuarioController.usuarioEdit.password}" 
+                                            validator="#{usuarioController.validarEspacoBranco}"                                          
+                                            required="true"
+                                            label="Senha de Acesso"
+                                            goodLabel="Senha boa"
+                                            strongLabel="Senha ótima"
+                                            weakLabel="Senha fraca"
+                                            promptLabel="Informe a sua senha"
+                                            style="width:400px;"
+                                            feedback="true" 
+                                            inline="true"                                                 
+                                            match="senhaAcessoInserir2"
+                                            validatorMessage="Senha de Acesso: Senhas informadas não conferem! Informe as senhas corretamente. As mesmas devem ser iguais."
+                                            /> 
+
+                                Confirmação de Senha*:
+                                <p:password id="senhaAcessoInserir2" value="#{usuarioController.usuarioEdit.password}" 
+                                            validator="#{usuarioController.validarEspacoBranco}"                                          
+                                            required="true"
+                                            label="Confirmação de Senha de Acesso"
+                                            goodLabel="Confirmação de senha boa"
+                                            strongLabel="Confirmação de senha ótima"
+                                            weakLabel="Confirmação de senha fraca"
+                                            promptLabel="Confirme a senha que você digitou"
+                                            style="width:400px;"
+                                            feedback="true" 
+                                            inline="true"                                                                                              
+                                            /> 
+
+
+
+
+
+
+
+
+
+                                Tipo de Usuário*
+                                <p:selectOneMenu  value="#{usuarioController.usuarioEdit.tipoUsuario.id}" label="Tipo de Usuário" required="true" >
+                                    <f:selectItems var="item" value="#{usuarioController.tipoUsuarioList}" itemValue="#{item.id}" itemLabel="#{item.descricao}"/>
+                                </p:selectOneMenu>
+
+
+
+
+                                Nome*:
+                                <p:inputText value="#{usuarioController.usuarioEdit.nome}" required="true" label="Nome" style="width:400px;"
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+
+                                Matrícula/Siape*:
+                                <p:inputText  value="#{usuarioController.usuarioEdit.matricula}" required="true" label="Matricula" style="width:100px;"
+                                              validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+                                CPF*:
+                                <p:inputMask value="#{usuarioController.usuarioEdit.cpf}" label="CPF" required="true" style="width:200px" mask="999.999.999-99" />
+
+
+
+
+
+
+                                Sexo*:
+                                <p:selectOneMenu  value="#{usuarioController.usuarioEdit.sexo}"  label="Sexo" required="true"  >
+                                    <f:selectItem itemValue="M" itemLabel="Masculino" />
+                                    <f:selectItem itemValue="F" itemLabel="Feminino" />                            
+                                </p:selectOneMenu>
+
+                                Endereço*:                                        
+                                <p:inputTextarea id="endereco" value="#{usuarioController.usuarioEdit.logradouro}" label="Endereço"  required="true" validator="#{usuarioController.validarEspacoBranco}" rows="2" cols="40"    />
+
+
+
+                                Número da Residência*:
+                                <p:inputText value="#{usuarioController.usuarioEdit.numeroDaResidencia}" required="true" label="Número" style="width: 50px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+                                Bairro*:
+                                <p:inputText value="#{usuarioController.usuarioEdit.bairro}" required="true" label="Bairro" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+
+
+
+
+
+
+
+
+
+
+                                Estado*:
+                                <p:selectOneMenu  id="EstadoInclui" value="#{usuarioController.usuarioEdit.cidadeResidencia.estado.id}"  
+                                                  required="true"
+                                                  requiredMessage="Estado: Erro de validação: o valor é necessário."
+                                                  >  
+                                    <f:selectItem itemLabel="Selecione o Estado" itemValue="0"  />  
+                                    <f:selectItems var="estado"
+                                                   value="#{usuarioController.estadoList}" 
+                                                   itemValue="#{estado.id}" itemLabel="#{estado.nome}"  />  
+                                    <p:ajax update="cidadesInclui"  
+                                            listener="#{usuarioController.handleCityChange(usuarioController.usuarioEdit.cidadeResidencia.estado.id)}" global="false" 
+                                            onstart="cidadesDialog.show()" oncomplete="cidadesDialog.hide()"  
+                                            onerror="cidadesDialog.hide();" 
+                                            >
+
+                                    </p:ajax>  
+                                </p:selectOneMenu>  
+
+
+
+                                Cidade*:
+                                <p:selectOneMenu id="cidadesInclui"  value="#{usuarioController.usuarioEdit.cidadeResidencia.id}"
+                                                 required="true"
+                                                 requiredMessage="Cidade: Erro de validação: o valor é necessário."
+                                                 >  
+                                    <f:selectItem itemLabel="Selecione a Cidade" itemValue="" />                          
+                                    <f:selectItems var="cidade"
+                                                   value="#{usuarioController.cidadesOfEstadoList}" 
+                                                   itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+
+                                </p:selectOneMenu>
+
+
+                                Complemento*:
+                                <p:inputText value="#{usuarioController.usuarioEdit.complemento}" required="true" label="Complemento" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+                                CEP*:
+                                <p:inputMask value="#{usuarioController.usuarioEdit.cep}" label="CEP" required="true" style="width:200px" mask="99999-999" />
+
+
+
+                                Telefone 01:
+                                <p:inputMask value="#{usuarioController.usuarioEdit.fone1}" label="Telefone 01"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+                                Telefone 02:
+                                <p:inputMask value="#{usuarioController.usuarioEdit.fone2}" label="Telefone 02"  style="width:150px" mask="(99) 9999-9999" />
+
+                                Telefone 03:
+                                <p:inputMask value="#{usuarioController.usuarioEdit.fone3}" label="Telefone 03"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+
+                                Email:
+                                <p:inputText value="#{usuarioController.usuarioEdit.email}" required="true" label="Email" style="width: 300px;" 
+                                             validator="#{usuarioController.validarEmail}" >
+                                </p:inputText> 
+
+
+
+
+
+
+
+
+
+
+                            </h:panelGrid>
+
+                            <br/>
+
+                            <p:fieldset id="fldPermissoesInsere" legend="Permissões de Acesso "     >                            
+                                <!--layout="pageDirection"-->
+                                <p:selectManyCheckbox id="selPermissoesInsere"    value="#{usuarioController.usuarioEdit.autorizacoes}"  requiredMessage="Permissões de Acesso: Selecione as permissões de acesso."   required="true" >
+                                    <f:converter converterId="converter.Autorizacao"/>
+                                    <f:attribute name="collectionType" value="java.util.ArrayList" />
+                                    <f:selectItems  value="#{usuarioController.autorizacaoList}" var="item2" itemValue="#{item2}"  itemLabel="#{item2.descricao}"/>
+                                </p:selectManyCheckbox>
+                            </p:fieldset>
+
+
+
+                            <br/>
+                            <p:messages id="msgCadastro"  redisplay="true"   /> 
+                            <center>
+                                <h:panelGrid id="panelBotoesInserir" columns="4" >                                   
+                                    <p:commandButton  update="msgCadastro, pnlGrdinserirUsuario, fldPermissoesInsere, :formUsuarios:tabela,  :formUsuarios:tabela:globalFilter "    actionListener="#{usuarioController.adicionarUsuario}" value="Salvar Usuário"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="inserir.hide();" update="pnlGrdinserirUsuario, fldPermissoesInsere, msgCadastro" widgetVar="limpaCamposInsere" process="@this"  >  
+                                        <p:resetInput target="pnlGrdinserirUsuario, fldPermissoesInsere, msgCadastro" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+
+
+                        </h:form>    
+                    </p:dialog>
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Alteração do Usuário
+                    *********************************************
+                    *********************************************
+                    -->
+
+                    <p:dialog header="Alteração de Usuário: #{usuarioController.selectedUsuario.username}" id="dialogAlteraUsuario"  widgetVar="alterar" closable="false" maximizable="true"  style="overflow: scroll;overflow-y: scroll;"  showEffect="fade" hideEffect="scale" modal="true"  width="1200" >    
+
+
+
+                        <h:form id="formAlterar" style="font-size: small;" prependId="false"  >
+
+
+
+
+
+                            <p:focus context="formAlterar" />
+
+                            &nbsp;&nbsp;&nbsp;Login do Usuário: <b>#{usuarioController.selectedUsuario.username}</b> <br/><br/>
+                            <!--                                <p:inputText value="# {usuarioController.selectedUsuario.username}" required="true" label="Login" style="width:400px;"
+                                                                         validator="# {usuarioController.validarEspacoBranco}" >
+                                                            </p:inputText> -->
+
+                            <h:inputHidden value="#{usuarioController.selectedUsuario.username}" required="true"  
+                                           validator="#{usuarioController.validarEspacoBranco}" >
+                            </h:inputHidden>
+
+
+                            <h:panelGrid  id="pnlGrdalterarUsuario" columns="4">
+
+                                Status do Usuário*:
+                                <p:selectOneMenu  value="#{usuarioController.selectedUsuario.enable}"  label="Status" required="true"  >
+                                    <f:selectItem itemValue="#{true}" itemLabel="Ativo"  />
+                                    <f:selectItem itemValue="#{false}" itemLabel="Inativo" />                                                                    
+                                </p:selectOneMenu>
+
+
+
+
+
+
+                                Tipo de Usuário*
+                                <p:selectOneMenu  value="#{usuarioController.selectedUsuario.tipoUsuario.id}" label="Tipo de Usuário" required="true" >
+                                    <f:selectItems var="item" value="#{usuarioController.tipoUsuarioList}" itemValue="#{item.id}" itemLabel="#{item.descricao}"/>
+                                </p:selectOneMenu>
+
+
+
+                                Nova Senha*:
+                                <p:password id="senhaAcessoAlterar" value="#{usuarioController.selectedUsuario.password}"                                                                                       
+                                            required="false"
+                                            label="Senha de Acesso"
+                                            goodLabel="Senha boa"
+                                            strongLabel="Senha ótima"
+                                            weakLabel="Senha fraca"
+                                            promptLabel="Informe uma nova senha de acesso ou deixe em branco para continuar com a antiga"
+                                            style="width:400px;"
+                                            feedback="true" 
+                                            inline="true"                                                 
+                                            match="senhaAcessoAlterar2"
+                                            validatorMessage="Senha de Acesso: Senhas informadas não conferem! Informe as senhas corretamente. As mesmas devem ser iguais."
+                                            /> 
+
+                                Confirmação de Nova Senha*:
+                                <p:password id="senhaAcessoAlterar2" value="#{usuarioController.selectedUsuario.password}"                                                                                       
+                                            required="false"
+                                            label="Confirmação de Senha de Acesso"
+                                            goodLabel="Confirmação de senha boa"
+                                            strongLabel="Confirmação de senha ótima"
+                                            weakLabel="Confirmação de senha fraca"
+                                            promptLabel="Confirme a nova senha que você digitou. Obs:Somente caso tenha digitado uma nova senha."
+                                            style="width:400px;"
+                                            feedback="true" 
+                                            inline="true"                                                                                              
+                                            />                                                                                                                                 
+
+
+
+
+
+
+
+
+
+
+
+                                Nome*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.nome}" required="true" label="Nome" style="width:400px;"
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+
+                                Matrícula/Siape*:
+                                <p:inputText  value="#{usuarioController.selectedUsuario.matricula}" required="true" label="Matricula" style="width:100px;"
+                                              validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+                                CPF*:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.cpf}" label="CPF" required="true" style="width:200px" mask="999.999.999-99" />
+
+
+
+
+
+
+                                Sexo*:
+                                <p:selectOneMenu  value="#{usuarioController.selectedUsuario.sexo}"  label="Sexo" required="true"  >
+                                    <f:selectItem itemValue="M" itemLabel="Masculino" />
+                                    <f:selectItem itemValue="F" itemLabel="Feminino" />                            
+                                </p:selectOneMenu>
+
+                                Endereço*:                                        
+                                <p:inputTextarea id="enderecoAltera" value="#{usuarioController.selectedUsuario.logradouro}" label="Endereço"  required="true" validator="#{usuarioController.validarEspacoBranco}" rows="2" cols="40"    />
+
+
+
+                                Número da Residência*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.numeroDaResidencia}" required="true" label="Número" style="width: 50px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+                                Bairro*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.bairro}" required="true" label="Bairro" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+                                Complemento*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.complemento}" required="true" label="Complemento" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+                                Estado*:
+                                <p:selectOneMenu  id="EstadoAltera" value="#{usuarioController.selectedUsuario.cidadeResidencia.estado.id}"  
+                                                  required="true"
+                                                  requiredMessage="Estado: Erro de validação: o valor é necessário."
+                                                  >  
+                                    <f:selectItem itemLabel="Selecione o Estado" itemValue="0"  /> 
+                                    <f:selectItems var="estado"
+                                                   value="#{usuarioController.estadoList}" 
+                                                   itemValue="#{estado.id}" itemLabel="#{estado.nome}"  />  
+                                    <p:ajax update="cidadesAltera"  
+                                            listener="#{usuarioController.handleCityChange(usuarioController.selectedUsuario.cidadeResidencia.estado.id)}" global="false" 
+                                            onstart="cidadesDialog.show()" oncomplete="cidadesDialog.hide()"  
+                                            onerror="cidadesDialog.hide();" 
+                                            >
+                                    </p:ajax>  
+                                </p:selectOneMenu>  
+
+                                Cidade*:
+                                <p:selectOneMenu  id="cidadesAltera"  value="#{usuarioController.selectedUsuario.cidadeResidencia.id}"
+                                                  required="true"
+                                                  requiredMessage="Cidade: Erro de validação: o valor é necessário."
+                                                  >  
+                                    <f:selectItem itemLabel="Selecione a Cidade" itemValue=""  /> 
+                                    <f:selectItems var="cidade"
+                                                   value="#{usuarioController.cidadesOfEstadoList}" 
+                                                   itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+
+                                </p:selectOneMenu>
+
+
+
+
+
+
+
+
+
+
+
+                                CEP*:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.cep}" label="CEP" required="true" style="width:200px" mask="99999-999" />
+
+
+
+                                Telefone 01:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone1}" label="Telefone 01"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+                                Telefone 02:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone2}" label="Telefone 02"  style="width:150px" mask="(99) 9999-9999" />
+
+                                Telefone 03:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone3}" label="Telefone 03"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+
+                                Email:
+                                <p:inputText value="#{usuarioController.selectedUsuario.email}" required="true" label="Email" style="width: 300px;" 
+                                             validator="#{usuarioController.validarEmail}" >
+                                </p:inputText> 
+
+
+
+
+
+
+
+
+
+
+                            </h:panelGrid>
+
+                            <br/>
+
+                            <p:fieldset id="fldPermissoesAltera" legend="Permissões de Acesso "     >                            
+                                <p:selectManyCheckbox id="selPermissoesAltera"    value="#{usuarioController.selectedUsuario.autorizacoes}"  requiredMessage="Permissões de Acesso: Selecione as permissões de acesso."  required="true" >
+                                    <f:converter converterId="converter.Autorizacao"/>
+                                    <f:attribute name="collectionType" value="java.util.ArrayList" />
+                                    <f:selectItems  value="#{usuarioController.autorizacaoList}" var="item2" itemValue="#{item2}"  itemLabel="#{item2.descricao}"/>
+                                </p:selectManyCheckbox>
+                            </p:fieldset>
+
+
+
+                            <br/>
+                            <p:messages id="msgAltera"  redisplay="true"   /> 
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesAlterar" columns="4" >
+                                    <p:commandButton  update="msgAltera, pnlGrdalterarUsuario, fldPermissoesAltera, :formUsuarios:tabela, :formUsuarios:tabela:globalFilter "    actionListener="#{usuarioController.alterarUsuario}" value="Atualizar Usuário"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="alterar.hide();" update="pnlGrdalterarUsuario, fldPermissoesAltera, msgAltera" widgetVar="limpaCamposAltera" process="@this"  >  
+                                        <p:resetInput target="pnlGrdalterarUsuario, fldPermissoesAltera, msgAltera" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+
+
+                        </h:form>    
+                    </p:dialog>
+
+
+                    
+
+
+                </sec:ifAllGranted>
+            </sec:isAuthenticated>
+        </ui:define>
+    </ui:composition>   
+
+</html>

@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+                      
+    </h:head>
+ <f:view  contentType="text/html; charset=UTF-8"  locale="pt_BR" >   <h:body style="background-image: url('resources/imgs/fundocortex.jpg')">
+        <center>
+            <img  src="resources/imgs/logo2.png"  class="img-rounded"/>
+        </center>
+        <h:form></h:form>
+
+        <p:dialog 
+            modal="true" position="center" widgetVar="cidadesDialog" header="Carregando Cidades..."
+            draggable="false" closable="false" 
+            resizable="false">
+            <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                <b>Por favor Aguarde</b></center>
+        </p:dialog>
+
+
+        <p:dialog 
+            modal="true" position="center" widgetVar="statusDialog" header="Enviando email..."
+            draggable="false" closable="false"
+            resizable="false">
+            <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                <b> Por favor Aguarde o envio do email ser concluído!</b><br/>                
+            </center>
+        </p:dialog>
+
+
+        <p:dialog header="Acesso ao Sistema"  visible="true" closable="false"  draggable="false" resizable="false" width="420">
+
+            <center>
+                <b>  <h:outputText value="Login ou senha incorretos ou seu Login foi bloqueado!" rendered="#{param.erro}" style="color: darkred"/></b>
+                <br/>                
+            </center>
+            <center>
+                <form action="j_spring_security_check" method="post">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel for="j_username" value="Login: *" /> 
+                        <h:inputText id="j_username" required="true"/>
+                        <h:outputLabel for="j_password" value="Senha: * " />
+                        <h:inputSecret id="j_password" required="true"/>
+                        <h:commandButton  class="btn btn-primary btn-primary" value="Entrar"  />
+                    </h:panelGrid>
+                </form>
+            </center>
+
+
+
+            <h:form id="formShowUsuario" style="text-align: right;" prependId="false">
+                <p:commandLink value="Faça aqui o seu Pré-Cadastro" actionListener="#{preCadastroController.prepararPreCadastroUsuario}" 
+                               update=":dialogUsuario,:formInfosUsuario"  oncomplete="dialogGerUsuario.show();" />
+            </h:form>              
+
+            <h:form id="formShowEmailUsuario" style="text-align: right;" prependId="false">
+                <p:commandLink value="Esqueceu seu login ou senha?" 
+                               actionListener="#{emailController.prepararFormDeRecuperacaoDeContaDeUsuario()}"                                
+                               oncomplete="dialogEmailGerUsuario.show();"
+                               ajax="false"
+                               />
+            </h:form>     
+            
+
+
+        </p:dialog>
+
+
+
+        <p:dialog header="Pré-Cadastro de Usuário" id="dialogUsuario"
+                  widgetVar="dialogGerUsuario" maximizable="true"  
+                  closable="false"
+                  showEffect="fade" hideEffect="scale" position="top" modal="true"  width="1250" style="overflow: scroll;overflow-y: scroll;" >
+
+
+            <h:form id="formInfosUsuario" style="font-size: small;" prependId="false" >
+
+                <p:focus context="formInfosUsuario" />
+
+                <h:panelGrid id="infosUsuario"   columns="6" >
+
+
+                    Login*:
+                    <p:inputText value="#{preCadastroController.usuario.username}" required="true" label="Login" 
+                                 validator="#{preCadastroController.validarCampoEspacoBranco}"
+                                 style="width: 100px;"
+                                 >
+                    </p:inputText> 
+
+
+                    
+                    Nome*:
+                    <p:inputText value="#{preCadastroController.usuario.nome}" required="true" label="Nome" style="width:250px;"
+                                 validator="#{preCadastroController.validarEspacoBranco}" >
+                    </p:inputText>
+
+
+
+                    Tipo de Usuário*
+                    <p:selectOneMenu  value="#{preCadastroController.usuario.tipoUsuario.id}" label="Tipo de Usuário" required="true" >
+                        <f:selectItems var="item" value="#{preCadastroController.tipoUsuarioList}" itemValue="#{item.id}" itemLabel="#{item.descricao}"/>
+                    </p:selectOneMenu>
+
+                    Senha*:
+                    <p:password id="senhaAcessoInserir" value="#{preCadastroController.usuario.password}" 
+                                validator="#{preCadastroController.validarEspacoBranco}"                                          
+                                required="true"
+                                label="Senha de Acesso"
+                                goodLabel="Senha boa"
+                                strongLabel="Senha ótima"
+                                weakLabel="Senha fraca"
+                                promptLabel="Informe uma senha"
+                                style="width:200px;"
+                                feedback="true" 
+                                inline="true"                                                 
+                                match="senhaAcessoInserir2"
+                                validatorMessage="Senha de Acesso: Senhas informadas não conferem! Informe as senhas corretamente. As mesmas devem ser iguais."
+                                /> 
+
+                    Confirmação de Senha*:
+                    <p:password id="senhaAcessoInserir2" value="#{preCadastroController.usuario.password}" 
+                                validator="#{preCadastroController.validarEspacoBranco}"                                          
+                                required="true"
+                                label="Confirmação de Senha de Acesso"
+                                goodLabel="Confirmação de senha boa"
+                                strongLabel="Confirmação de senha ótima"
+                                weakLabel="Confirmação de senha fraca"
+                                promptLabel="Confirme a senha"
+                                style="width:200px;"
+                                feedback="true" 
+                                inline="true"                                                                                              
+                                /> 
+
+
+
+
+
+ 
+
+
+
+
+                    Matrícula/Siape*:
+                    <p:inputText value="#{preCadastroController.usuario.matricula}" required="true" label="Matricula" style="width:100px;"
+                                 validator="#{preCadastroController.validarEspacoBranco}" >
+                    </p:inputText> 
+
+
+
+                    CPF*:
+                    <p:inputMask value="#{preCadastroController.usuario.cpf}" label="CPF" required="true" style="width:200px" mask="999.999.999-99" />
+
+
+
+
+
+
+                    Sexo*:
+                    <p:selectOneRadio  value="#{preCadastroController.usuario.sexo}"  label="Sexo" required="true"  >
+                        <f:selectItem itemValue="M" itemLabel="Masculino" />
+                        <f:selectItem itemValue="F" itemLabel="Feminino" />                            
+                    </p:selectOneRadio>
+
+                    Endereço*:                                        
+                    <p:inputTextarea  value="#{preCadastroController.usuario.logradouro}" label="Endereço"  required="true" validator="#{preCadastroController.validarEspacoBranco}" rows="2" cols="40"    />
+
+
+
+                    Número da Residência*:
+                    <p:inputText value="#{preCadastroController.usuario.numeroDaResidencia}" required="true" label="Número" style="width: 50px;" 
+                                 validator="#{preCadastroController.validarEspacoBranco}" >
+                    </p:inputText>                     
+
+
+                    Bairro*:
+                    <p:inputText value="#{preCadastroController.usuario.bairro}" required="true" label="Bairro" style="width: 250px;" 
+                                 validator="#{preCadastroController.validarEspacoBranco}" >
+                    </p:inputText>                     
+
+
+                    Complemento*:
+                    <p:inputText value="#{preCadastroController.usuario.complemento}" required="true" label="Complemento" style="width: 250px;" 
+                                 validator="#{preCadastroController.validarEspacoBranco}" >
+                    </p:inputText> 
+
+
+
+
+
+
+
+
+
+
+                    Estado*:
+                    <p:selectOneMenu  id="Estado" value="#{preCadastroController.usuario.cidadeResidencia.estado.id}"   >  
+                        <f:selectItem itemLabel="Selecione o Estado" itemValue=""  />  
+                        <f:selectItems var="estado1"
+                                       value="#{preCadastroController.estadoList}" 
+                                       itemValue="#{estado1.id}" itemLabel="#{estado1.nome}"  />  
+                        <p:ajax update="cidades"  
+                                listener="#{preCadastroController.handleCityChange}" global="false" 
+                                onstart="cidadesDialog.show()" oncomplete="cidadesDialog.hide()"  
+                                onerror="cidadesDialog.hide();" 
+                                >
+                        </p:ajax>  
+                    </p:selectOneMenu>  
+
+
+
+                    Cidade*:
+                    <p:selectOneMenu id="cidades"  value="#{preCadastroController.usuario.cidadeResidencia.id}">  
+                        <f:selectItem itemLabel="Selecione a Cidade" itemValue="" />                          
+                        <f:selectItems var="cidade"
+                                       value="#{preCadastroController.cidadesOfEstadoList}" 
+                                       itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+                    </p:selectOneMenu>
+
+
+
+
+
+
+
+
+
+                    CEP*:
+                    <p:inputMask value="#{preCadastroController.usuario.cep}" label="CEP" required="true" style="width:200px" mask="99999-999" />
+
+
+
+                    Telefone 01:
+                    <p:inputMask value="#{preCadastroController.usuario.fone1}" label="Telefone 01"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+                    Telefone 02:
+                    <p:inputMask value="#{preCadastroController.usuario.fone2}" label="Telefone 02"  style="width:150px" mask="(99) 9999-9999" />
+
+                    Telefone 03:
+                    <p:inputMask value="#{preCadastroController.usuario.fone3}" label="Telefone 03"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+
+                    Email:
+                    <p:inputText value="#{preCadastroController.usuario.email}" required="true" label="Email" style="width: 300px;" 
+                                 validator="#{preCadastroController.validarEmail}" >
+                    </p:inputText>                                                    
+
+
+
+
+                </h:panelGrid>
+
+
+
+
+
+                
+                <p:messages id="msgCadastro"  redisplay="true"   />  
+                <center>                                                 
+
+
+                    <p:commandButton update="msgCadastro,infosUsuario"   actionListener="#{preCadastroController.salvar}" value="Enviar Dados"/>                    
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="dialogGerUsuario.hide();" update="infosUsuario, msgCadastro" widgetVar="limpaCamposAltera" process="@this"  >  
+                        <p:resetInput target="infosUsuario, msgCadastro" />  
+                    </p:commandButton>
+
+                </center>
+
+            </h:form>
+        </p:dialog>
+
+
+
+
+
+        <p:dialog header="Recuperação das credenciais do usuário" id="dialogEmailUsuario"  
+                  visible="#{emailController.visible}"
+                  widgetVar="dialogEmailGerUsuario" maximizable="true"  closable="false"  showEffect="fade" 
+                  hideEffect="scale"  modal="true"                   
+                  appendToBody="true"
+                  width="650" height="350"  >
+
+
+            <h:form id="formEmailInfosUsuario" style="font-size: small;" prependId="false" >
+
+                <p:focus context="formEmailInfosUsuario" />
+
+                
+                    <h:panelGrid id="emailInfosUsuario"   columns="1" >
+                        Informe o cpf do usuário*:<br/>
+                        <p:inputMask value="#{emailController.cpf}" label="CPF" requiredMessage="Informe o CPF do usuário corretamente." required="true" style="width:200px" mask="999.999.999-99" />
+
+                        <br/>
+                
+                        <p:captcha 
+                                   value="#{emailController.captcha}"  
+                                   rendered="#{emailController.visible}"
+                                   validatorMessage="Captcha: Preencha corretamente o valor do captcha."
+                                   required="true" 
+                                   requiredMessage="Captcha: Informe o valor do captcha corretamente."  
+                                   label="Captcha" 
+                                   language="pt" 
+                                   theme="red" />
+
+                        <br/>
+                        
+                    </h:panelGrid>                                                            
+                
+                
+                
+                         <center>                                                            
+                        <p:commandButton update=":formEmailInfosUsuario:emailInfosUsuario, :formEmailInfosUsuario:msgEmailCadastro" 
+                                         onstart="statusDialog.show();" 
+                                         oncomplete="Recaptcha.reload();statusDialog.hide();"                                                                                     
+                                         actionListener="#{emailController.recuperarCredenciaisDoUsuario()}" 
+                                         ajax="false"
+                                         value="Recuperar Credenciais"/>                    
+                        
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                       
+                                    <p:commandButton value="Fechar Janela" immediate="true"  
+                                            oncomplete="dialogEmailGerUsuario.hide();" update=":formEmailInfosUsuario:emailInfosUsuario, :formEmailInfosUsuario:msgEmailCadastro"
+                                            widgetVar="limpaEmailCamposAltera"
+                                            actionListener="#{emailController.fecharJanelaDeRecuperacaoDeContaDeUsuario()}" 
+                                            process="@this"  
+                                            ajax="false"
+                                            >  
+                                        <p:resetInput target=":formEmailInfosUsuario:emailInfosUsuario, :formEmailInfosUsuario:msgEmailCadastro" />  
+                                    </p:commandButton>
+                       </center>
+                
+                
+                
+                
+                <center>
+                    <p:messages id="msgEmailCadastro"  redisplay="true"  showDetail="false"  />  
+                </center>
+
+                
+                            
+
+            </h:form>
+        </p:dialog>
+
+
+
+    </h:body>
+</f:view></html>

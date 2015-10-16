@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:b="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/security
+                            http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+    
+    
+    <global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+
+    <http auto-config="true" use-expressions="true"   >
+          
+        <intercept-url pattern="/index.jsf" access="isAuthenticated()" />
+        <intercept-url pattern="/index.xhtml" access="isAuthenticated()" />
+        <intercept-url pattern="/modulos/usuarios/usuarios.jsf" access="hasRole('ROLE_ADM')"  />
+        <intercept-url pattern="/modulos/usuarios/usuarios.xhtml" access="hasRole('ROLE_ADM')"  />        
+        <intercept-url pattern="/modulos/lojinha/lojinha.jsf" access="hasRole('ROLE_LOJINHA')"  />
+        <intercept-url pattern="/modulos/lojinha/lojinha.xhtml" access="hasRole('ROLE_LOJINHA')"  />                        
+        <intercept-url pattern="/modulos/minhaConta/minhaConta.jsf" access="hasRole('ROLE_BOLETO')"  />
+        <intercept-url pattern="/modulos/minhaConta/minhaConta.xhtml" access="hasRole('ROLE_BOLETO')"  />
+        <intercept-url pattern="/modulos/ticket/ticket.jsf" access="hasRole('ROLE_TICKET')"  />
+        <intercept-url pattern="/modulos/ticket/ticket.xhtml" access="hasRole('ROLE_TICKET')"  />
+         
+
+        <intercept-url pattern="/login.jsf" access="permitAll" />
+        <intercept-url pattern="/login.xhtml" access="permitAll" />  
+        <intercept-url pattern="/precadastro.jsf" access="permitAll" />        
+        <intercept-url pattern="/precadastro.xhtml" access="permitAll" />
+       
+        <intercept-url pattern="/modulos/**" access="isAuthenticated()" />
+        <intercept-url pattern="/modulos/usuarios/**" access="hasRole('ROLE_ADM')"  />                                                                    
+        <intercept-url pattern="/modulos/lojinha/**" access="hasRole('ROLE_LOJINHA')"  />                                                                                                                                         
+        <intercept-url pattern="/modulos/minhaConta/**" access="hasRole('ROLE_BOLETO')"  />                                                                     
+        <intercept-url pattern="/modulos/ticket/**" access="hasRole('ROLE_TICKET')"  /> 
+        
+        <form-login login-page="/login.jsf"   authentication-failure-url="/login.jsf?erro=true"   />        
+        <access-denied-handler error-page="/semPermissao.xhtml" />        
+                        
+        <logout invalidate-session="true" logout-url="/j_spring_security_logout"  logout-success-url="/login.jsf" />                
+        
+    </http>
+    
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+               users-by-username-query="SELECT username, password, enable FROM usuario WHERE username=?"
+               authorities-by-username-query="SELECT usuario_id as username, autorizacao_id as authority FROM usuario_autorizacao WHERE usuario_id=?"               
+            />
+        </authentication-provider>
+    </authentication-manager>
+<!--
+    <b:bean id="dataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource"  >
+        <b:property name="url" value="jdbc:postgresql://localhost:5432/livraria" />
+        <b:property name="driverClassName" value="org.postgresql.Driver" />
+        <b:property name="username" value="postgres" />
+        <b:property name="password" value="postgres" />
+    </b:bean>-->
+    
+   
+    <b:bean id="dataSource" class = "com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <b:property name="driverClass" value="org.postgresql.Driver" />
+        <b:property name="jdbcUrl" value="jdbc:postgresql://localhost:5433/cortex" />
+        <b:property name="user" value="postgres" />
+        <b:property name="password" value="postgres" />
+         <!--these are C3P0 properties--> 
+        <b:property name="acquireIncrement" value="2" />
+        <b:property name="initialPoolSize" value="2" />                
+        <b:property name="minPoolSize" value="2" />
+        <b:property name="maxPoolSize" value="10" />
+        
+        <b:property name="maxIdleTime" value="400" />
+        <b:property name="maxStatementsPerConnection" value="100" />
+        
+         <b:property name="idleConnectionTestPeriod" value="120" />
+         
+         <b:property name="acquireRetryAttempts" value="200" />
+         <b:property name="acquireRetryDelay" value="200" />
+         <b:property name="breakAfterAcquireFailure" value="false" />
+
+<!--c3p0.acquireIncrement           hibernate.c3p0.acquire_increment
+c3p0.idleConnectionTestPeriod	hibernate.c3p0.idle_test_period
+c3p0.maxIdleTime                hibernate.c3p0.timeout
+c3p0.maxPoolSize                hibernate.c3p0.max_size
+c3p0.maxStatements              hibernate.c3p0.max_statements
+c3p0.minPoolSize                hibernate.c3p0.min_size-->
+
+
+<!--    acquireRetryAttempts 30 60-->
+
+ <!--acquireRetryDelay 1000-->
+ 
+ <!--breakAfterAcquireFailure false-->
+
+    </b:bean>
+
+    
+    
+
+</b:beans>

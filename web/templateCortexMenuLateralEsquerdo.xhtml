@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"        
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"> 
+
+    <f:view  contentType="text/html; charset=UTF-8"  locale="pt_BR" >
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <!--<meta http-equiv="refresh" content="905;URL=index.jsf" />-->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+            <link href="./resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.maskMoney.js" ></script>
+            <title>Cortex - Sistema de Refeitório do IFPI Campus Floriano</title>       
+
+        </h:head>
+        <h:body  style="background-image: url('resources/imgs/fundocortex.jpg')">
+
+
+
+            <h:form></h:form>            
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" onerror="statusDialog.hide();" oncomplete="statusDialog.hide();"  />
+            <p:dialog 
+                modal="true" position="center" widgetVar="statusDialog" header="Processando..."
+                draggable="false" closable="false"
+                resizable="false">
+                <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                    <b> Por favor Aguarde...</b></center>
+            </p:dialog>
+
+
+
+
+
+
+             <div id="top">
+                <ui:insert name="top">
+                        <center>
+                        <img  src="./resources/imgs/logo3.png"  class="img-rounded"/>
+                        </center>                    
+                </ui:insert>
+            </div>
+            <div>
+                <div id="left" class="dropdown-menu" style="width: auto;" >
+                    <ui:insert name="left">
+                        <center>
+                        <h4>Menu Principal</h4>
+                        </center>
+                        <h:form id="formMenuPrincipal"  prependId="false" >
+                            <p:menu id="menuPrin"  style="width: 230px; border-radius: 24px 29px 37px 9px;">  
+                                <p:submenu id="SubMen" style="border-radius: 24px 29px 37px 9px;" label="Módulos de Acesso">  
+
+                                    <sec:ifAllGranted roles="ROLE_ADM"  >
+                                        <p:menuitem value="Administração de Usuários"  id="btnGerenciaUsuarios" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/modulos/usuarios/usuarios.jsf"  icon="ui-icon-disk" />  
+                                    </sec:ifAllGranted>
+
+                                    <sec:ifAllGranted roles="ROLE_LOJINHA"  >
+                                        <p:menuitem value="Administração da Lojinha" onclick="statusDialog.show();" oncomplete="statusDialog.hide();"  url="/modulos/lojinha/lojinha.jsf"  icon="ui-icon-search" />  
+                                    </sec:ifAllGranted>
+                                    
+                                    
+                                    <sec:ifAllGranted roles="ROLE_BOLETO"  >
+                                        <p:menuitem value="Administração da Minha Conta"  id="btnGerenciaMinhaConta" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/modulos/minhaConta/minhaConta.jsf"  icon="ui-icon-disk" />  
+                                    </sec:ifAllGranted>
+                                    
+                                    
+                                     <sec:ifAllGranted roles="ROLE_TICKET"  >
+                                        <p:menuitem value="Administração de Tickets"  id="btnGerenciaTickets" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/modulos/ticket/ticket.jsf"  icon="ui-icon-disk" />  
+                                    </sec:ifAllGranted>
+
+                                    
+
+                                </p:submenu>                          
+                                <p:submenu style="border-radius: 24px 29px 37px 9px;" label="Logout">                
+                                    <p:menuitem value="Sair do Sistema" url="/j_spring_security_logout" icon="ui-icon-close"/>                                 
+                                </p:submenu>  
+                            </p:menu> 
+                        </h:form>  
+                        <br/>
+
+                    </ui:insert>
+                </div>
+                <div id="content" class="left_content" >
+                    <ui:insert name="content">Ficará o conteúdo da Tela</ui:insert>
+                </div>
+            </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <div >
+        	<p style="color:white">
+                <ul class="inline">  
+                <p>
+                        <center> 
+                            © 2013 Instituto Federal de Educação Ciência e Tecnologia do Piauí - Campus Floriano <br/>
+                            Todos os Direitos Reservados                            
+                        </center>
+                </p>
+            </ul>
+            </p>
+            </div>
+
+
+
+        </h:body>
+    </f:view>
+</html>

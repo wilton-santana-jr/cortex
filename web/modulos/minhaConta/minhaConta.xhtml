@@ -1,0 +1,970 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">     
+
+    <ui:composition template="/templateCortexMenuSuperior.xhtml">
+        <ui:define name="content">
+            <sec:isAuthenticated>
+                <sec:ifAllGranted roles="ROLE_BOLETO"  >
+
+                    <h:form></h:form>            
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" onerror="statusDialog.hide();" oncomplete="statusDialog.hide();"  />
+                    <p:dialog 
+                        modal="true" position="center" widgetVar="statusDialog" header="Processando..."
+                        draggable="false" closable="false"
+                        resizable="false">
+                        <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                            <b> Por favor Aguarde</b></center>
+                    </p:dialog>
+                    <p:dialog 
+                        modal="true" position="center" widgetVar="cidadesDialog" header="Carregando Cidades..."
+                        draggable="false" closable="false" 
+                        resizable="false">
+                        <center><p:graphicImage value="/resources/imgs/ajax-loader_1.gif" /><br/><br/>
+                            <b>Por favor Aguarde</b></center>
+                    </p:dialog>
+
+
+
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Administração da conta do usuário logado
+                    *********************************************
+                    *********************************************
+                    --> 
+                    <h:form id="formMinhaConta"  prependId="false" >  
+
+
+
+
+
+
+                        <p:menubar  autoDisplay="true"  >
+
+                            <p:menuitem value="Menu Principal" onclick="statusDialog.show();" oncomplete="statusDialog.hide();" url="/index.jsf"  icon="ui-icon-disk" />                         
+                            <p:submenu  label="Minha Conta" icon="ui-icon-person" >                              
+
+                             <sec:ifNotGranted roles="ROLE_ALUNO"  >
+                                <p:menuitem value="Gerar GRU" id="btnGeraBoletoUsuario"
+                                            update=":dialogGeraBoletoUsuario"                                             
+                                            oncomplete="geraBoletoUsuarioLogado.show();"
+                                            icon="ui-icon-newwin"
+                                            /> 
+
+                                <p:separator />
+
+
+                                <p:menuitem value="Visualizar Saldo" id="btnVisualizaCreditosUsuario"                                                     
+                                            ajax="true"
+                                            actionListener="#{contaController.exibirSaldoUsuarioLogado}" 
+                                            update=":dialogSaldoUsuario, :formVisualizaSaldo"                                             
+                                            oncomplete="visualizaSaldoUsuarioLogado.show();"
+                                            icon="ui-icon-newwin"
+
+                                            >
+
+                                </p:menuitem>  
+
+                                <p:separator />
+
+                                <p:menuitem value="Gerar Extrato" id="btnVisualizaExtratosUsuario"                                                     
+                                            ajax="true"
+                                            actionListener="#{contaController.prepararGerarExtratoUsuarioLogado}" 
+                                            update=":dialogExtratoUsuario, :formVisualizaExtrato"                                             
+                                            oncomplete="visualizaExtratoUsuarioLogado.show();"
+                                            icon="ui-icon-newwin"
+
+                                            />  
+
+                             </sec:ifNotGranted>
+
+                                <p:separator />
+                                
+                                
+
+
+                                <p:menuitem value="Solicitar/Comprar Ticket" id="btnCompraTicketUsuario"                                                     
+                                            ajax="true"                                            
+                                            actionListener="#{vendaTicketController.prepararFormComprarTicketUsuarioLogado()}" 
+                                            update=":dialogComprarTicket, :formComprarTicket"                                                 
+                                            oncomplete="comprarTicket.show()"  
+                                            icon="ui-icon-newwin"
+
+                                            />  
+
+
+
+
+
+                                <p:separator />
+
+
+                                <p:menuitem value="Alterar Meus Dados" id="btnAlterarDadosUsuarioLogado"                                                     
+                                            ajax="true"                                            
+                                            actionListener="#{usuarioController.carregarDadosUsuarioLogado()}" 
+                                            update=":dialogAlteraUsuario, :formAlterarUsuario"                                                                                
+                                            oncomplete="alterarUsuarioLogado.show()"  
+                                            icon="ui-icon-newwin"
+
+                                            />  
+
+                            </p:submenu>
+
+
+                            <p:submenu label="Logout" icon="ui-icon-extlink" >                        
+                                <p:menuitem value="Sair do Sistema"   url="/j_spring_security_logout" icon="ui-icon-extlink"/>
+                            </p:submenu>
+
+
+
+                        </p:menubar>
+
+
+                        <br/>
+
+
+
+
+
+                    </h:form> 
+
+
+
+
+                    <!--                    
+                   *********************************************
+                   *********************************************
+                   Dialog de Geração de Boleto para pagamento no banco
+                   Formulário de Geração de Boleto para Pagamento no Banco
+                   *********************************************
+                   *********************************************
+                    -->                    
+
+                    <p:dialog header="Módulo de Geração de GRU para o Usuário: #{loginController.usuario.nome}" id="dialogGeraBoletoUsuario"  widgetVar="geraBoletoUsuarioLogado" 
+                              maximizable="false" closable="true"   position="center" resizable="false"
+                              appendToBody="true"
+                              showEffect="fade" hideEffect="scale" modal="true"  width="600" height="250" >
+
+
+                        <script type="text/javascript">
+                                jQuery(function($) {
+                                    $(".valor").maskMoney({symbol: "R$", decimal: ",", thousands: "."});
+                                });
+                        </script>
+
+
+
+                        <script type="text/javascript" >
+                            function Disparar() {
+                                document.frm.action = "http://consulta.tesouro.fazenda.gov.br/gru_novosite/gerarHTML.asp";
+                                document.frm.target = "_blank";
+                                document.getElementById('valorPrincipal').value = document.getElementById('valorTotal').value;
+                                document.frm.submit();
+                            }
+                        </script>
+
+
+                        <table align="center" border="0" cellpadding="4" cellspacing="4" width="90%">
+
+                            <tr>
+                                <td  align="left" height="100%" width="100%">
+
+
+
+                                    <form name="frm"  accept-charset="ISO-8859-1"  method="post" id="frm">
+
+                                        <input name="codigo_favorecido" id="codigo_favorecido" value="158146" type="hidden"></input>
+                                        <input name="gestao" id="gestao" value="26431" type="hidden"></input>
+                                        <input id="codigo_correlacao" name="codigo_correlacao" value="10422" type="hidden"></input>
+                                        <input name="nome_favorecido" id="nome_favorecido" value="INST.FED.DE EDUC.,CIENC.E TEC.DO PIAUI" type="hidden"></input>                                    
+                                        <input name="codigo_recolhimento" id="codigo_recolhimento" value="28832-2" type="hidden"></input>
+                                        <input name="nome_recolhimento" id="nome_recolhimento" value="SERVICOS EDUCACIONAIS" type="hidden"></input>
+                                        <!-- 3-html 1-pdf 4-baixarpdf -->
+                                        <input name="boleto" value="3" type="hidden" ></input>
+                                        <input name="pagamento" value="1" type="hidden" ></input>
+                                        <input name="campo" value="NRCR" type="hidden" ></input>
+                                        <input name="ind" value="0" type="hidden" ></input>
+                                        <input name="impressao" value="SA" type="hidden" ></input>
+                                        <input id="cnpj_cpf" name="cnpj_cpf" value="${loginController.usuario.cpf}" type="hidden" />
+                                        <input value="${loginController.usuario.nome}" size="60" maxlength="45" id="nome_contribuinte" name="nome_contribuinte"  type="hidden" />
+                                        <input value="158355.26431"  size="28" maxlength="20" id="referencia" name="referencia" type="hidden" />
+                                        <input value=""  size="28" maxlength="20" id="valorPrincipal" name="valorPrincipal" type="hidden" />
+                                        <input value="#{boletoController.competencia}"  size="28" maxlength="20"  id="competencia" name="competencia" type="hidden" />
+                                        <input value="#{boletoController.vencimento}"  size="28" maxlength="20"  id="vencimento" name="vencimento" type="hidden" />
+
+
+                                        Nome: ${boletoController.usuario.nome}
+                                        <br/><br/>
+                                        CPF: ${boletoController.usuario.cpf}
+                                        <br/><br/>
+
+                                        Valor Total R$:*
+                                        <p:inputText id="valorTotal" value="10,00" styleClass="valor"/>
+
+
+
+                                        <br/>
+                                        <br/>
+
+                                        <center>                                              
+                                            <h:panelGrid id="panelBotoesGerarGRU" columns="4" >
+                                                <p:commandButton  ajax="false"   onclick="Disparar();" type="button"    value="Gerar GRU"  />                                   
+                                                <p:commandButton value="Fechar Janela" ajax="false" type="button"   onclick="geraBoletoUsuarioLogado.hide();"  widgetVar="limpaCamposGeraGRU"   />                                                  
+                                            </h:panelGrid>
+                                        </center>
+
+
+                                    </form>
+                                    <!-- final form frm -->
+
+
+
+
+
+
+
+
+                                    <br/>
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+
+
+
+
+                    </p:dialog>
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Fim do Dialog de Geração de Boleto de pagamento do usuário logado
+                    Fim do Formulário de Geração de Boleto de pagamento do usuário logado
+                    *********************************************
+                    *********************************************
+                    -->     
+
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Dialog de Exibição do Saldo de Créditos da Conta do Cliente
+                    Formulário de Exibição do Saldo de Créditos da Conta do Cliente
+                    *********************************************
+                    *********************************************
+                    -->                    
+
+                    <p:dialog header="Meu Saldo em Créditos (R$)" id="dialogSaldoUsuario"  widgetVar="visualizaSaldoUsuarioLogado" 
+                              maximizable="false" closable="true"   position="center" resizable="false"
+                              appendToBody="true"
+                              showEffect="fade" hideEffect="scale" modal="true"  width="300" height="250" > 
+
+
+
+                        <h:form id="formVisualizaSaldo" style="font-size: small;" prependId="false"  >                                
+                            <center>
+                                Caro usuário: #{loginController.usuario.nome}<br/>
+                                Seu saldo em créditos é de 
+                                <font color="red"><b>                                
+                                        <h:outputText value="#{contaController.saldo}">                                      
+                                            <f:converter converterId="converter.ValorMonetario"/>
+                                        </h:outputText>                                                                 
+                                    </b>
+                                </font>                                                
+                            </center>
+
+                            <br/>
+
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesVisualizaSaldo" columns="1" >                            
+                                    <p:commandButton value="Fechar Janela" ajax="false" type="button"   onclick="visualizaSaldoUsuarioLogado.hide();"  widgetVar="limpaCamposVisualizaSaldo"   />                                                  
+                                </h:panelGrid>
+                            </center>
+                        </h:form> 
+
+
+
+                    </p:dialog>
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Fim do Dialog de Exibição do Saldo de Créditos da Conta do Cliente
+                    Fim do Formulário de Exibição do Saldo de Créditos da Conta do Cliente
+                    *********************************************
+                    *********************************************
+                    -->     
+
+                    <!--                    
+                   *********************************************
+                   *********************************************
+                   Dialog de Exibição do Extrato da Conta do Usuário
+                   Formulário de envio do período que quer do extrato da conta de Créditos da Conta do Cliente
+                   *********************************************
+                   *********************************************
+                    -->                    
+
+                    <p:dialog header="Extrato da Conta do Usuário: #{loginController.usuario.nome}" id="dialogExtratoUsuario"  widgetVar="visualizaExtratoUsuarioLogado" 
+                              maximizable="true" closable="true"   position="center" resizable="false"
+                              appendToBody="true"
+                              showEffect="fade" hideEffect="scale" modal="true"  width="700" height="325" > 
+
+
+
+
+
+                        <h:form id="formVisualizaExtrato" style="font-size: small;" prependId="false"  >  
+
+
+                            <p:focus context="formVisualizaExtrato" />
+
+
+
+                            <center>
+                                <b>Informe o período para geração do extrato da sua conta</b>
+                                <br/><br/>
+
+
+
+                                <table>
+                                    <tr>
+                                        <td align="left"><b>Data Início</b></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right"><b>Data Fim</b></td>
+                                    </tr>
+
+                                </table>
+
+
+
+
+                                <h:panelGrid  id="pnlGrdExtratoUsuario" columns="4">
+
+                                    <script>
+                            PrimeFaces.locales['pt'] = {
+                                closeText: 'Fechar',
+                                prevText: 'Anterior',
+                                nextText: 'Próximo',
+                                currentText: 'Começo',
+                                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                                weekHeader: 'Semana',
+                                firstDay: 1,
+                                isRTL: false,
+                                showMonthAfterYear: false,
+                                yearSuffix: '',
+                                timeOnlyTitle: 'Só Horas',
+                                timeText: 'Tempo',
+                                hourText: 'Hora',
+                                minuteText: 'Minuto',
+                                secondText: 'Segundo',
+                                currentText: 'Data Atual',
+                                        ampm: false,
+                                month: 'Mês',
+                                week: 'Semana',
+                                day: 'Dia',
+                                allDayText: 'Todo Dia'
+                            };
+                                    </script>
+                                    <br/>
+                                    <p:calendar label="Data Início" value="#{contaController.dataFormIni}" required="true" requiredMessage="Informe a data inicial do extrato" mindate="#{contaController.dataFormIniMin}"  maxdate="#{contaController.dataFormFimMax}" locale="pt"  mode="inline"/>
+
+                                    <br/>
+
+                                    <br/>
+                                    <p:calendar label="Data Fim" value="#{contaController.dataFormFim}"  required="true" requiredMessage="Informe a data final do extrato"  mindate="#{contaController.dataFormIniMin}" maxdate="#{contaController.dataFormFimMax}" locale="pt" mode="inline"/>
+
+                                    <br/> 
+                                </h:panelGrid>
+
+
+                                <p:messages id="msgExtrato"  redisplay="true"   /> 
+                                <center>
+                                    <h:panelGrid id="panelBotoesExtrato" columns="4" >                                   
+
+
+                                        <p:commandButton  update="msgExtrato, 
+                                                          pnlGrdExtratoUsuario, :formExtrato:tabela" 
+                                                          oncomplete="visualizaTabelaExtratoUsuarioLogado.show()"
+                                                          actionListener="#{contaController.exibirExtratoUsuarioLogado}" 
+                                                          value="Gerar Extrato da Conta"  />                                   
+
+
+                                        <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="visualizaExtratoUsuarioLogado.hide();" update="pnlGrdExtratoUsuario, msgExtrato" widgetVar="limpaCamposInsere" process="@this"  >  
+                                            <p:resetInput target="pnlGrdExtratoUsuario, msgExtrato" />  
+                                        </p:commandButton>
+                                    </h:panelGrid>
+                                </center>
+
+                            </center>                                
+                        </h:form> 
+
+                        <br/>
+
+
+                    </p:dialog>
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Fim do Dialog de Exibição do Extrato da Conta do Usuário
+                    Fim do Formulário de envio do período que quer do extrato da conta de Créditos da Conta do Cliente
+                    *********************************************
+                    *********************************************
+                    -->     
+
+
+
+                    <!--                    
+                             *********************************************
+                             *********************************************
+                            Dialog de Detalhes do Extrato da Conta do Usuário
+                             Formulário de Detalhes do Extrato de Créditos da Conta do Cliente
+                             *********************************************
+                             *********************************************
+                    -->    
+
+                    <p:dialog header="Detalhes do Extrato da Conta do Usuário: #{loginController.usuario.nome}" id="dialogTabelaExtratoUsuario"  widgetVar="visualizaTabelaExtratoUsuarioLogado" 
+                              maximizable="true" closable="true"   position="center" resizable="false"
+                              appendToBody="true"
+                              style="overflow: scroll;overflow-y: scroll;"
+                              showEffect="fade" hideEffect="scale" modal="true"  width="550" height="450" >                               
+
+
+
+                        <h:form id="formExtrato"  prependId="false" >
+
+
+
+
+                            <br/>
+
+                            <center>
+                                <p:commandButton value="Imprimir" type="button"  icon="ui-icon-print" >  
+                                    <p:printer target="tabela" />  
+                                </p:commandButton> 
+                            </center>
+
+                            <br/>
+
+
+                            <p:dataTable  widgetVar="tabelaExtrato" 
+                                          emptyMessage="Extrato vazio para o período informado!"
+                                          var="registro" value="#{contaController.listRegistroOperacao}" id="tabela" >  
+
+                                <f:facet name="header">  
+
+                                    Extrato <br/>
+                                    <div style="text-align: left;">  
+
+                                        Usuário: #{loginController.usuario.nome}<br/>
+                                        CPF: #{loginController.usuario.cpf} 
+                                    </div>
+
+
+
+                                    <div style="text-align: right;">
+                                        <p:outputPanel>                                  
+
+                                            Saldo Anterior:
+                                            <h:outputText value="#{contaController.saldoAnteriorExtrato}">                                      
+                                                <f:converter converterId="converter.ValorMonetario"/>
+                                            </h:outputText> 
+                                        </p:outputPanel>
+                                    </div>
+                                </f:facet>  
+
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        Data  
+                                    </f:facet>  
+
+                                    <h:outputText value="#{registro.dataRegistroToString}" />  
+
+                                </p:column>  
+
+
+
+                                <p:column headerText="Operação">  
+                                    <font color="blue">
+                                        <b>
+                                            <h:outputText value="#{registro.tipoOperacao.nome}" rendered="#{registro.tipoOperacao.abreviacao=='C'}" ></h:outputText>  
+                                        </b>    
+                                    </font>
+                                    <font color="red">
+                                        <b>
+                                            <h:outputText value="#{registro.tipoOperacao.nome}" rendered="#{registro.tipoOperacao.abreviacao=='D'}" ></h:outputText>  
+                                        </b>    
+                                    </font>
+                                </p:column>  
+
+                                <p:column headerText="Valor" rendered="#{registro.tipoOperacao.abreviacao=='C'}">  
+                                    <font color="blue">
+                                        <b>
+                                            <h:outputText value="#{registro.valor}"  >
+                                                <f:converter converterId="converter.ValorMonetario"/>
+                                            </h:outputText>+ 
+                                        </b>    
+                                    </font>
+                                </p:column>  
+
+                                <p:column headerText="Valor" rendered="#{registro.tipoOperacao.abreviacao=='D'}">  
+                                    <font color="red">
+                                        <b>
+                                            <h:outputText value="#{registro.valor}"  >
+                                                <f:converter converterId="converter.ValorMonetario"/>
+                                            </h:outputText>-  
+                                        </b>    
+                                    </font>
+                                </p:column>  
+
+
+
+                                <f:facet name="footer">  
+                                    <div style="text-align: right;" > 
+                                        Saldo Total:                                     
+                                        <h:outputText value="#{contaController.saldoTotalExtrato}">                                      
+                                            <f:converter converterId="converter.ValorMonetario"/>
+                                        </h:outputText> 
+                                    </div>
+                                </f:facet>  
+
+                            </p:dataTable>
+
+                            <br/>
+                            <br/>
+
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesVisualizaExtratoUsuario" columns="4" >                            
+                                    <p:commandButton value="Fechar Janela" ajax="false" type="button"   onclick="visualizaTabelaExtratoUsuarioLogado.hide();"  widgetVar="limpaCamposVisualizaTabelaExtratoUsuarioLogado"   />                                                  
+                                </h:panelGrid>
+                            </center>
+
+                        </h:form>  
+
+
+
+
+                    </p:dialog>
+
+                    <!--                    
+                   *********************************************
+                   *********************************************
+                   Fim do Dialog de Detalhes do Extrato da Conta do Usuário
+                   Fim do Formulário de Detalhes do Extrato de Créditos da Conta do Cliente
+                   *********************************************
+                   *********************************************
+                    -->    
+
+
+
+
+
+
+
+                    <!--                    
+                      *********************************************
+                      *********************************************
+                      Formulário de Compra de Tickets do Usuário
+                      *********************************************
+                      *********************************************
+                    -->
+                    
+                    <p:dialog header="Solicitar/Comprar Ticket Usuário: #{vendaTicketController.selectedUsuario.nome} (#{vendaTicketController.selectedUsuario.tipoUsuario.descricao}) / Saldo em créditos: #{vendaTicketController.saldoUsuarioLogado} "
+                              id="dialogComprarTicket" 
+                              style="overflow: scroll;overflow-y: scroll;"
+                              widgetVar="comprarTicket" 
+                              closable="true" maximizable="true"   position="center" 
+                              showEffect="fade" hideEffect="scale" modal="true"  
+                              width="1250"
+                              height="550"
+                              appendToBody="true">    
+
+
+
+
+                        <h:form id="formComprarTicket"  prependId="false"   >      
+
+
+                            <center>
+
+
+                                <p:dataTable  widgetVar="tabelaTicketsDaSemana"
+                                              style="font-size:smaller;"                                                              
+                                              emptyMessage="Não existe ticket disponível para compra na semana!Aguarde a nutricionista realizar o cadastro dos tickets da semana."
+                                              var="ticketSem" value="#{vendaTicketController.listTicketsDaSemanaDataModel}" id="tabelaTicketsDaSemanaAVenda"
+                                              selection="#{vendaTicketController.selectedTicket}"
+                                              selectionMode="single"
+
+                                              >
+
+
+
+
+                                    <f:facet name="header">  
+
+                                        <b>CARDÁPIO <br/>
+                                            #{vendaTicketController.semanaCardapio}</b>
+                                    </f:facet>  
+
+                                    <p:column>  
+                                        <f:facet name="header">  
+                                            Data  
+                                        </f:facet>  
+
+                                        <b> <h:outputText value="#{ticketSem.dataRefeicaoSemana}" />  </b>
+
+                                    </p:column> 
+
+                                    <p:column>  
+                                        <f:facet name="header">  
+                                            Refeição 
+                                        </f:facet>  
+
+
+
+
+                                        <b><h:outputText value="#{ticketSem.tipoRefeicao.nome}" /> - </b>
+                                        <h:outputText value="#{ticketSem.cardapioRefeicao}" />  
+
+                                    </p:column>   
+
+
+                                    <p:column>  
+                                        <f:facet name="header">  
+                                            Horário de Funcionamento
+                                        </f:facet>  
+
+                                        <h:outputText value="#{ticketSem.horarioFuncionamento}" />  
+
+                                    </p:column> 
+
+
+                                    <p:column>  
+                                        <f:facet name="header">  
+                                            Quant. Comprada
+                                        </f:facet>  
+
+                                        <center>
+                                            <b><h:outputText value="#{vendaTicketController.quantidadeCompradaPeloUsuarioLogado(ticketSem.id)}" /></b>  
+                                        </center>
+
+                                    </p:column> 
+
+                                    <p:column  >  
+                                        <f:facet name="header"  >  
+                                            Compra de Ticket
+                                        </f:facet>  
+
+
+
+                                        <center>
+                                            
+                                            
+
+                                            <p:commandButton  
+                                                rendered="#{ticketSem.getStatusQuantidadeComprar(vendaTicketController.quantidadeCompradaPeloUsuarioLogado(ticketSem.id),vendaTicketController.selectedUsuario.tipoUsuario.descricao)}"
+                                                update=":dialogComprarTicket,
+                                                :formComprarTicket:tabelaTicketsDaSemanaAVenda,
+                                                :formComprarTicket:msgComprarTicket
+                                                "                                                                                                                                                                                                                           
+                                                ajax="true"
+                                                actionListener="#{vendaTicketController.comprarTicketByUsuarioLogado(ticketSem.id)}" 
+                                                oncomplete="comprarTicket.show()"
+                                                title="Adicionar Ticket"
+                                                value="+"  />  
+                                            
+                                             
+
+                                            <p:commandButton  
+                                                rendered="#{ticketSem.getStatusQuantidadeDesistir(vendaTicketController.quantidadeCompradaPeloUsuarioLogado(ticketSem.id),vendaTicketController.selectedUsuario.tipoUsuario.descricao)}"
+                                                update=":dialogComprarTicket,
+                                                :formComprarTicket:tabelaTicketsDaSemanaAVenda,
+                                                :formComprarTicket:msgComprarTicket
+                                                "                                                                                                                                                                                                                           
+                                                ajax="true"
+                                                actionListener="#{vendaTicketController.desistirTicketByUsuarioLogado(ticketSem.id)}" 
+                                                oncomplete="comprarTicket.show()"
+                                                value="-" 
+                                                title="Remover Ticket"
+                                                
+                                                /> 
+                                            
+                                            
+
+                                        </center>
+                                    </p:column> 
+
+                                    <f:facet name="footer">  
+
+                                        <div style="text-align: center;border: solid black;" > 
+                                            <b>VALORES</b>      <br/>                              
+
+                                            #{vendaTicketController.valoresTicketSemana} <br/>
+
+                                            ATENDEMOS EXCLUSIVAMENTE À COMUNIDADE DO IFPI <br/>
+                                            <b>EVITE O DESPERDÍCIO!</b><br/>   
+                                            <b style="color: red">Observações: O ticket estará disponível para venda até o período de 1h:30min antes do início
+                                                da refeição.</b>
+
+                                        </div> 
+                                    </f:facet> 
+
+                                </p:dataTable>                                 
+
+
+                                <p:messages id="msgComprarTicket"   redisplay="true"   /> 
+
+
+
+                                <h:panelGrid id="panelTicketVenda"  rendered="#{vendaTicketController.listTickets.size()==0}">
+                                    <center>
+                                        <b style="color: red">Não existe ticket disponível para compra! <br/>Aguarde a nutricionista cadastrar tickets a venda para o refeitório!</b>
+                                    </center>
+                                </h:panelGrid>
+
+
+
+
+
+
+
+
+
+                            </center>
+
+
+                        </h:form> 
+
+                    </p:dialog>
+                    
+
+                    
+                    
+
+
+
+
+
+                    <!--                    
+                    *********************************************
+                    *********************************************
+                    Formulário de Alteração De Dados do Usuario Logado
+                    *********************************************
+                    *********************************************
+                    -->
+
+                    <p:dialog header="Alteração de Usuário: #{usuarioController.selectedUsuario.nome}(#{usuarioController.selectedUsuario.tipoUsuario.descricao})" 
+                              id="dialogAlteraUsuario" 
+                              widgetVar="alterarUsuarioLogado" 
+                              closable="false" maximizable="true"  
+                              style="overflow: scroll;overflow-y: scroll;"  
+                              showEffect="fade" hideEffect="scale" modal="true" height="480"  width="1200" >    
+
+
+
+                        <h:form id="formAlterarUsuario" style="font-size: small;" prependId="false"  >
+
+
+
+
+
+                            <p:focus context="formAlterarUsuario" />
+
+
+                            <h:inputHidden value="#{usuarioController.selectedUsuario.username}" required="true"  
+                                           validator="#{usuarioController.validarEspacoBranco}" >
+                            </h:inputHidden>
+
+                            <p:fieldset legend="Dados Básicos do Usuário">  
+                                <h:panelGrid id="pnlGrdDadosBasicosUsuario" columns="2" cellpadding="1">  
+
+                                    &nbsp;&nbsp;&nbsp;Nome: <b>#{usuarioController.selectedUsuario.nome}(#{usuarioController.selectedUsuario.tipoUsuario.descricao})</b><br/>                                    
+                                    &nbsp;&nbsp;&nbsp;Login do Usuário: <b>#{usuarioController.selectedUsuario.username}</b><br/>                                    
+                                    &nbsp;&nbsp;&nbsp;Matrícula/Siape: <b>#{usuarioController.selectedUsuario.matricula}</b><br/>
+                                    &nbsp;&nbsp;&nbsp;CPF: <b>#{usuarioController.selectedUsuario.cpf}</b><br/>
+                                </h:panelGrid>  
+                            </p:fieldset>
+
+                            <br/>
+
+                            <h:panelGrid  id="pnlGrdalterarUsuario" columns="6">
+
+                                Nome*: 
+                                <p:inputText value="#{usuarioController.selectedUsuario.nome}" required="true" label="Nome" style="width:200px;"
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+                                Sexo*:
+                                <p:selectOneMenu  value="#{usuarioController.selectedUsuario.sexo}"  label="Sexo" required="true"  >
+                                    <f:selectItem itemValue="M" itemLabel="Masculino" />
+                                    <f:selectItem itemValue="F" itemLabel="Feminino" />                            
+                                </p:selectOneMenu>
+
+                                Endereço*:                                        
+                                <p:inputTextarea id="enderecoAltera" value="#{usuarioController.selectedUsuario.logradouro}" label="Endereço"  required="true" validator="#{usuarioController.validarEspacoBranco}" rows="2" cols="40"    />
+
+
+
+
+                                Senha Atual:   
+                                <p:password id="senhaAtualAcessoAlterar" value="#{usuarioController.selectedUsuario.passwordAtual}"                                                                                       
+                                            required="false"
+                                            label="Senha Atual de Acesso"
+                                            goodLabel="Senha boa"
+                                            strongLabel="Senha ótima"
+                                            weakLabel="Senha fraca"
+                                            promptLabel="Informe a sua senha atual de acesso ou deixe em branco para continuar com a mesma"
+                                            style="width:200px;"
+                                            feedback="true" 
+                                            inline="true"                                                                                             
+                                            validatorMessage="Senha de Atual de Acesso: Senha atual de acesso inválida informe a senha atual de acesso corretamente."
+                                            /> 
+
+
+
+                                Nova Senha:
+                                <p:password id="senhaAcessoAlterar" value="#{usuarioController.selectedUsuario.password}"                                                                                       
+                                            required="false"
+                                            label="Nova Senha de Acesso"
+                                            goodLabel="Senha boa"
+                                            strongLabel="Senha ótima"
+                                            weakLabel="Senha fraca"
+                                            promptLabel="Informe uma nova senha de acesso ou deixe em branco para continuar com a antiga"
+                                            style="width:200px;"
+                                            feedback="true" 
+                                            inline="true"                                                 
+                                            match="senhaAcessoAlterar2"
+                                            validatorMessage="Nova Senha de Acesso: Senhas informadas não conferem! Informe as senhas corretamente. As mesmas devem ser iguais."
+                                            /> 
+
+                                Confirmação de Nova Senha:
+                                <p:password id="senhaAcessoAlterar2" value="#{usuarioController.selectedUsuario.password}"                                                                                       
+                                            required="false"
+                                            label="Confirmação de Nova Senha de Acesso"
+                                            goodLabel="Confirmação de senha boa"
+                                            strongLabel="Confirmação de senha ótima"
+                                            weakLabel="Confirmação de senha fraca"
+                                            promptLabel="Confirme a nova senha que você digitou. Obs:Somente caso tenha digitado uma nova senha."
+                                            style="width:200px;"
+                                            feedback="true" 
+                                            inline="true"                                                                                              
+                                            />   
+
+
+
+
+
+
+                                Número da Residência*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.numeroDaResidencia}" required="true" label="Número" style="width: 50px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+                                Bairro*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.bairro}" required="true" label="Bairro" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText>                     
+
+
+                                Complemento*:
+                                <p:inputText value="#{usuarioController.selectedUsuario.complemento}" required="true" label="Complemento" style="width: 250px;" 
+                                             validator="#{usuarioController.validarEspacoBranco}" >
+                                </p:inputText> 
+
+
+
+                                CEP*:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.cep}" label="CEP" required="true" style="width:200px" mask="99999-999" />
+
+
+
+                                Estado*:
+                                <p:selectOneMenu  id="EstadoAltera" value="#{usuarioController.selectedUsuario.cidadeResidencia.estado.id}"  
+                                                  required="true"
+                                                  requiredMessage="Estado: Erro de validação: o valor é necessário."
+                                                  >  
+                                    <f:selectItem itemLabel="Selecione o Estado" itemValue="0"  /> 
+                                    <f:selectItems var="estado"
+                                                   value="#{usuarioController.estadoList}" 
+                                                   itemValue="#{estado.id}" itemLabel="#{estado.nome}"  />  
+                                    <p:ajax update="cidadesAltera"  
+                                            listener="#{usuarioController.handleCityChange(usuarioController.selectedUsuario.cidadeResidencia.estado.id)}" global="false" 
+                                            onstart="cidadesDialog.show()" oncomplete="cidadesDialog.hide()"  
+                                            onerror="cidadesDialog.hide();" 
+                                            >
+                                    </p:ajax>  
+                                </p:selectOneMenu>  
+
+                                Cidade*:
+                                <p:selectOneMenu  id="cidadesAltera"  value="#{usuarioController.selectedUsuario.cidadeResidencia.id}"
+                                                  required="true"
+                                                  requiredMessage="Cidade: Erro de validação: o valor é necessário."
+                                                  >  
+                                    <f:selectItem itemLabel="Selecione a Cidade" itemValue=""  /> 
+                                    <f:selectItems var="cidade"
+                                                   value="#{usuarioController.cidadesOfEstadoList}" 
+                                                   itemValue="#{cidade.id}" itemLabel="#{cidade.nome}" />
+
+                                </p:selectOneMenu>
+
+
+                                Telefone 01:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone1}" label="Telefone 01"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+                                Telefone 02:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone2}" label="Telefone 02"  style="width:150px" mask="(99) 9999-9999" />
+
+                                Telefone 03:
+                                <p:inputMask value="#{usuarioController.selectedUsuario.fone3}" label="Telefone 03"  style="width:150px" mask="(99) 9999-9999" />
+
+
+
+
+                                Email:
+                                <p:inputText value="#{usuarioController.selectedUsuario.email}" required="true" label="Email" style="width: 200px;" 
+                                             validator="#{usuarioController.validarEmail}" >
+                                </p:inputText> 
+
+
+                            </h:panelGrid>
+
+                            <p:messages id="msgAltera"  redisplay="true"   /> 
+                            <center>                                              
+                                <h:panelGrid id="panelBotoesAlterar" columns="4" >
+                                    <p:commandButton  update="msgAltera, pnlGrdalterarUsuario, pnlGrdDadosBasicosUsuario"    actionListener="#{usuarioController.alterarUsuarioLogado}" value="Atualizar Usuário"  />                                   
+                                    <p:commandButton value="Fechar Janela" immediate="true"  oncomplete="alterarUsuarioLogado.hide();" update="pnlGrdalterarUsuario, pnlGrdDadosBasicosUsuario, msgAltera" widgetVar="limpaCamposAlteraUsuarioLogado" process="@this"  >  
+                                        <p:resetInput target="pnlGrdalterarUsuario, pnlGrdDadosBasicosUsuario, msgAltera" />  
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </center>
+
+                        </h:form>    
+                    </p:dialog>
+
+
+                </sec:ifAllGranted>
+            </sec:isAuthenticated>
+        </ui:define>
+    </ui:composition>   
+
+</html>
